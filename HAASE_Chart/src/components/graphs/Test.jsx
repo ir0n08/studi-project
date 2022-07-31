@@ -1,71 +1,58 @@
 import React from "react";
-import { stockData } from "../../../stockDataS";
-import { data } from "./Graph";
-
-export const arrStocks = stockData;
-/*
+//import { stockData } from "../../../stockData";
 
 
 export function transStocks(stockData) {
-   
-    {
-        var output = {name: "data.name"};
-        
-        //stockData.map((data, key) => {
-
-            
-            
-            //output['name'] = data.name;
-            /*
-            let i = 0;
-            {
-                data.prices.map((pdata, key) => {
-
-                    
-                    output.date = pdata.date;
-                    
-                    //output[i].open = pdata.opening;
-                    i++;
-                });
-            }
-            
-        //});
-        return output;
-    }
-    
+  //console.log(stockData);
+  //let objStock = stockData[0]; // write search func in json data
+  
+  //return Object.values(objStock);
+  return stockData;
 }
-*/
+
+
+
+export function getSingleStock(id,stockData) {
+  let resStock = [];
+
+  let oStock = stockData[0]['values'].map((stock) => {
+    // if note in day range remove it 
+    if(stock.isin == id) {
+      resStock = stock;
+    }
+   
+  });
+  return resStock;
+  
+}
+
+export function getClosingByDay(stockData,startDate,endDate) {
+
+  //let [isin, nameStock, symbol, prices] = transStocks(stockData);
+  stockData = Object.values(stockData);
+  console.log(stockData);
+  let [isin, nameStock, symbol, prices] = stockData;
+
+  var tempArray = [];
+  var resArray = [["Datum", nameStock]];
+  let oDay = prices.map((dayData) => {
+    // if note in day range remove it 
+    if(!(dayData.date < startDate || dayData.date > endDate)) {
+      tempArray = [dayData.date,dayData.closing];
+      resArray.push(tempArray);
+    }
+   
+  });
+  return resArray;
+}
+
 
 export const Stocks = () => {
+
     return(
         <div className="stock-container">
             
         </div>
     );
-    /*
-  return (
-    <>
-      <div className="stock-container">
-        {stockData.map((data, key) => {
-          return (
-            <div key={key}>
-
-              {data.name}
-
-              {data.prices.map((pdata, key) => {
-                return (
-                   <div>{pdata.date + ": " + pdata.opening}</div>
-                );
-              })}
-            </div>
-
-            
-          );
-        })}
-
-
-      </div>
-    </>
-  );*/
-
+   
 };

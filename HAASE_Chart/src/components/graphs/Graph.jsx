@@ -2,39 +2,24 @@ import React from "react";
 import GraphMenu from './GraphMenu';
 import { Chart } from "react-google-charts";
 //import {json-loader} from "json-loader";
-import { stockData } from "../../../stockDataS";
-import { arrStocks, Stocks } from "./Test";
+import { stockData } from "../../../stockData";
+import { Stocks,getSingleStock, getClosingByDay } from "./Test";
 
+//console.log(stockData);
+export const startDay = '2022-01-20'; // 2be replace by input data
+export const endDay = '2022-02-22';
+export const cStockID = 'DE0008404005'; //allian & 2be replaced
 
+export const options = {
+  chart: {
+    title: "Box Office Earnings in First Two Weeks of Opening",
+    subtitle: "in millions of dollars (USD) ",
+  },
+};
 
-export const data = [
-    [
-      "Date",
-      "Aktie " + stockData.name,
-    ],
-    ["2020-05-01", 34.7],
-    ["2020-05-02", 37.8],
-    ["2020-05-03", 37.8],
-    ["2020-05-04", 34.8],
-    ["2020-05-05", 33.8],
-    ["2020-05-06", 37.8],
-    ["2020-05-07", 37.8],
-    ["2020-05-08", 31.8],
-    ["2020-05-09", 35.8],
-    ["2020-05-10", 37.8],
-    ["2020-05-11", 37.8],
-    ["2020-05-12", 70.8],
-    ["2020-05-13", 74.8],
-    ["2020-05-14", 77.8],
-    ["2020-05-15", 72.8],
-  ];
-
-  export const options = {
-    chart: {
-      title: "Box Office Earnings in First Two Weeks of Opening",
-      subtitle: "in millions of dollars (USD) ",
-    },
-  };
+export const cStockData = getSingleStock(cStockID,stockData);
+export const stockClosingData = getClosingByDay(cStockData,startDay,endDay);
+//export const stockClosingData = [['datum','name'],['freitag',55]];
   
 
 export default function Graph(){
@@ -48,7 +33,7 @@ export default function Graph(){
             chartType="Line"
             width="100%"
             height="400px"
-            data={data}
+            data={stockClosingData}
             options={options}
             />
             </div>
