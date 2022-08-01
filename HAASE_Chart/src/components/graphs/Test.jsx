@@ -34,11 +34,12 @@ export function getClosingByDay(stockData,startDate,endDate) {
   let [isin, nameStock, symbol, prices] = stockData;
 
   var tempArray = [];
-  var resArray = [["Datum", nameStock]];
+  var resArray = [[{ type: "string", label: "Datum"}, {type: "number", label:"Stock price"},{id: "i0", type: "number", role:"interval"},{id: "i1", type: "number", role:"interval"}]];
+
   let oDay = prices.map((dayData) => {
     // if note in day range remove it 
     if(!(dayData.date < startDate || dayData.date > endDate)) {
-      tempArray = [dayData.date,dayData.closing];
+      tempArray = [dayData.date,dayData.opening,dayData.closing,dayData.opening];
       resArray.push(tempArray);
     }
    
