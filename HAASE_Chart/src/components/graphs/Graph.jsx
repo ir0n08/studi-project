@@ -3,19 +3,35 @@ import GraphMenu from './GraphMenu';
 import { Chart } from "react-google-charts";
 //import {json-loader} from "json-loader";
 import { stockData } from "../../../stockData";
-import { Stocks,getSingleStock, getClosingByDay } from "./Test";
+import { Stocks, getSingleStock, getClosingByDay, getStockNames } from "./Test";
 
 //console.log(stockData);
-export const startDay = '2022-01-20'; // 2be replace by input data
-export const endDay = '2022-02-22';
+export const startDay = '2022-01-19'; // 2be replace by input data
+export const endDay = '2022-04-22';
 export const cStockID = 'DE0008404005'; //allian & 2be replaced
 
 export const options = {
-  title: 'Bars, default',
-  curveType: 'function',
-  series: [{'color': '#D9544C'}],
-  intervals: { style: 'bars' },
   legend: 'none',
+  hAxis: {
+    title: "Datum",
+  },
+  vAxis: {
+    title: "Stock value in EUR",
+
+  },
+  series: {
+    0: {curveType: "none", intervals: { style: 'bars' }, color: '#D9544C' }, // actuale stock value
+    1: {curveType: "function",color: '#49baff',opacity: 0.1} // average line
+  },
+  trendlines: {
+    1: {
+      type: 'exponential',
+      color: 'green',
+      pointSize: 200,
+      opacity: 1,
+      pointsVisible: false
+    }
+  }
 };
 
 
@@ -53,8 +69,10 @@ export const Testoptions = {
 
 export const cStockData = getSingleStock(cStockID,stockData);
 export const stockClosingData = getClosingByDay(cStockData,startDay,endDay);
-console.log(stockClosingData);
+//console.log(stockClosingData);
 //export const stockClosingData = [['datum','name'],['freitag',55]];
+
+console.log(getStockNames(stockData));
   
 
 export default function Graph(){

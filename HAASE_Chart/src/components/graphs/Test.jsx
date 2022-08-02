@@ -34,18 +34,38 @@ export function getClosingByDay(stockData,startDate,endDate) {
   let [isin, nameStock, symbol, prices] = stockData;
 
   var tempArray = [];
-  var resArray = [[{ type: "string", label: "Datum"}, {type: "number", label:"Stock price"},{id: "i0", type: "number", role:"interval"},{id: "i1", type: "number", role:"interval"}]];
+  var resArray = [[{ type: "string", label: "Datum"}, {type: "number", label:"Stock price"},{id: "i0", type: "number", role:"interval"},{id: "i1", type: "number", role:"interval"},{type: "number", label:"Average"}]];
 
   let oDay = prices.map((dayData) => {
     // if note in day range remove it 
     if(!(dayData.date < startDate || dayData.date > endDate)) {
-      tempArray = [dayData.date,dayData.opening,dayData.closing,dayData.opening];
+      tempArray = [dayData.date,getMedium(dayData.opening,dayData.closing),dayData.closing,dayData.opening,200];
       resArray.push(tempArray);
     }
    
   });
   return resArray;
 }
+
+export function getMedium(lVal,rVal) {
+  if(lVal < rVal) {
+    return lVal + (rVal - lVal) / 2;
+  } else {
+    return rVal + (lVal - rVal) / 2;
+  }
+}
+
+export function getStockNames(stockData) {
+  var res = [];
+  var tempArray = [];
+
+  let oStock = stockData[0]['values'].map((stock) => {
+    tempArray = {isin: stock.isin,name: stock.name,symbol: stock.symbol};
+    res.push(tempArray);
+  });
+  return Object.values(res);
+}
+
 
 
 export const Stocks = () => {
