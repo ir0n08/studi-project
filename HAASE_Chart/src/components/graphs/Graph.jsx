@@ -6,8 +6,8 @@ import { stockData } from "../../../stockData";
 import { Stocks, getSingleStock, getClosingByDay, getStockNames } from "./Test";
 
 //console.log(stockData);
-export const startDay = '2022-01-19'; // 2be replace by input data
-export const endDay = '2022-04-22';
+export const startDay = '2021-02-01'; // 2be replace by input data
+export const endDay = '2022-02-28';
 export const cStockID = 'DE0008404005'; //allian & 2be replaced
 
 export const options = {
@@ -19,61 +19,15 @@ export const options = {
     title: "Stock value in EUR",
 
   },
+  intervals: { style: 'boxes' },
   series: {
-    0: {curveType: "none", intervals: { style: 'bars' }, color: '#D9544C' }, // actuale stock value
-    1: {curveType: "function",color: '#49baff',opacity: 0.1} // average line
+    0: { color: '#D9544C' }, // actuale stock value
+    1: { curveType: "function", color: '#49baff', opacity: 1} // average line
   },
-  trendlines: {
-    1: {
-      type: 'exponential',
-      color: 'green',
-      pointSize: 200,
-      opacity: 1,
-      pointsVisible: false
-    }
-  }
 };
-
-
-
-export const Testdata = [
-  [
-    { type: "String", label: "x" },
-    { type: "number", label: "values" },
-    { id: "i0", type: "number", role: "interval" },
-    { id: "i1", type: "number", role: "interval" },
-    { id: "i2", type: "number", role: "interval" },
-    { id: "i2", type: "number", role: "interval" },
-    { id: "i2", type: "number", role: "interval" },
-    { id: "i2", type: "number", role: "interval" },
-  ],
-  [1, 100, 90, 110, 85, 96, 104, 120],
-  [2, 120, 95, 130, 90, 113, 124, 140],
-  [3, 130, 105, 140, 100, 117, 133, 139],
-  [4, 90, 85, 95, 85, 88, 92, 95],
-  [5, 70, 74, 63, 67, 69, 70, 72],
-  [6, 30, 39, 22, 21, 28, 34, 40],
-  [7, 80, 77, 83, 70, 77, 85, 90],
-  [8, 100, 90, 110, 85, 95, 102, 110],
-];
-
-export const Testoptions = {
-  title: "Sticks, default",
-  curveType: "function",
-  series: [{ color: "#E7711B" }],
-  intervals: { style: "area" },
-  legend: "hoo",
-};
-
-
 
 export const cStockData = getSingleStock(cStockID,stockData);
 export const stockClosingData = getClosingByDay(cStockData,startDay,endDay);
-//console.log(stockClosingData);
-//export const stockClosingData = [['datum','name'],['freitag',55]];
-
-console.log(getStockNames(stockData));
-  
 
 export default function Graph(){
 
