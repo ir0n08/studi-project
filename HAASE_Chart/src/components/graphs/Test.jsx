@@ -1,5 +1,6 @@
 import React from "react";
 //import { stockData } from "../../../stockData";
+import {bolFactor, medianDays} from "./Graph"; // check if solved with func-args or global vals
 
 
 export function transStocks(stockData) {
@@ -33,8 +34,18 @@ export function getClosingByDay(stockData,startDate,endDate) {
   console.log(stockData);
   let [isin, nameStock, symbol, prices] = stockData;
 
-  var tempArray = []; var arrGD = [];var last12 = [];var last26 = []; let vGD = 0; let fEMA = 0; let sEMA = 0; let MACD = 0;
-  var resArray = [[{ type: "string", label: "Datum"}, {type: "number", label:"Stock price"},{id: "i0", type: "number", role:"interval"},{id: "i1", type: "number", role:"interval"},{type: "number", label:"200 Tage gleitender Durchschnitt"}]];
+  var tempArray = []; var arrGD = [];var last12 = [];var last26 = [];var lastSignal = [];var lastRSI = []; var arrBollinger = []; 
+  let vGD = 0; let fEMA = 0; let sEMA = 0; let MACD = 0; let signalMACD = 0; let closingDayBefore = prices[0].closing; let RSI = 0; let bolMed = 0; let bolLow = 0; let bolUpr = 0; let bolStdDev = 0;
+  var resArray = [[{ 
+    type: "string", label: "Datum"}, 
+    {type: "number", label:"Stock price"},
+    {id: "i0", type: "number", role:"interval"},
+    {id: "i1", type: "number", role:"interval"},
+    {type: "number", label: medianDays +" Tage gleitender Durchschnitt"},
+    {type: "number", label: "Unteres Bollinger Band"},
+    {type: "number", label: "Mittleres Bollinger Band"},
+    {type: "number", label: "Oberes Bollinger Band"},
+  ]];
 
   
   // funct get slow
@@ -44,26 +55,67 @@ export function getClosingByDay(stockData,startDate,endDate) {
     // if note in day range remove it 
 
     // get the avarage of last 200 days
-    [vGD, arrGD] = get200Median(dayData.closing,arrGD);
+    [vGD, arrGD] = getNmedian(dayData.closing,arrGD,medianDays);
 
     // get MACD data
     [fEMA,last12] = getEMA(dayData.closing,last12,12);
     [sEMA,last26] = getEMA(dayData.closing,last26,26);
     MACD = fEMA - sEMA; // MACD = fast EMA minus slow EMA
+    [signalMACD, lastSignal] = getEMA(MACD,lastSignal,9);
+
+    // get RSI data
+    let stockChange = dayData.closing - closingDayBefore;
+    [RSI,lastRSI] = getRSI(stockChange,lastRSI,14);
+    closingDayBefore = dayData.closing;
+
+    // get Bollinger Bander
+    [bolMed, arrBollinger] = getNmedian(dayData.closing,arrBollinger,20); // get Center Bollinger Value, default 20, maybe add a changer later?
+    bolStdDev = standardDeviation(arrBollinger,bolMed); // get the standard deveriation
+    bolUpr = bolMed + (bolFactor * bolStdDev);
+    bolLow = bolMed - (bolFactor * bolStdDev);
+    
 
     if(!(dayData.date < startDate || dayData.date > endDate)) {
-      tempArray = [dayData.date,dayData.closing,dayData.low,dayData.high,vGD];
+      tempArray = [dayData.date,dayData.closing,dayData.low,dayData.high,vGD,bolLow,bolMed,bolUpr];
       resArray.push(tempArray);
-      console.log(MACD);
+      console.log(dayData.date+": RSI("+RSI+"), MACD("+MACD+"), singnalMACD("+signalMACD+"), bollinger med ("+bolMed+")");
     }
    
   });
   return resArray;
 }
 
-export function get200Median(cVal,arrGD) {
+export function standardDeviation(arr,xline) {
+  let tSum = 0;
+  arr.map((ele) => {
+    tSum += Math.pow((ele-xline),2);
+  });
+  return Math.sqrt(tSum/(arr.length)); // n = (arr.length) minus 1 or not? is this the total space or only a sample?
+}
+
+export function getRSI(stockChange,lastRSI,n) {
+  let medPos = 0; let medNeg = 0;
+
+  if(lastRSI.length >= n) {
+    lastRSI.shift();
+  }
+  lastRSI.push(stockChange);
+
+  lastRSI.map((ele) => {
+    if(ele >= 0) {
+      medPos += ele;
+    } else {
+      medNeg += -(ele); // wichtig: für den durschnitt nur positive werte!
+    }
+  });
+
+  return [((medPos/n) / ( (medNeg/n) + (medPos/n) )) * 100, lastRSI];
+}
+
+
+export function getNmedian(cVal,arrGD,n) {
   let median = 0;
-  if(arrGD.length >= 200) { // if 200 ele in array then remove the first entry
+  if(arrGD.length >= n) { // if 200 ele in array then remove the first entry
     arrGD.shift();
   }
   arrGD.push(cVal);
