@@ -42,9 +42,9 @@ export function getClosingByDay(stockData,startDate,endDate) {
     {id: "i0", type: "number", role:"interval"},
     {id: "i1", type: "number", role:"interval"},
     {type: "number", label: medianDays +" Tage gleitender Durchschnitt"},
-    {type: "number", label: "Unteres Bollinger Band"},
     {type: "number", label: "Mittleres Bollinger Band"},
-    {type: "number", label: "Oberes Bollinger Band"},
+    {id: "i2", type: "number", label: "Unteres Bollinger Band", role:"interval"},
+    {id: "i2", type: "number", label: "Oberes Bollinger Band", role:"interval"}
   ]];
 
   
@@ -76,7 +76,7 @@ export function getClosingByDay(stockData,startDate,endDate) {
     
 
     if(!(dayData.date < startDate || dayData.date > endDate)) {
-      tempArray = [dayData.date,dayData.closing,dayData.low,dayData.high,vGD,bolLow,bolMed,bolUpr];
+      tempArray = [dayData.date,dayData.closing,dayData.low,dayData.high,vGD,bolMed,bolLow,bolUpr];
       resArray.push(tempArray);
       console.log(dayData.date+": RSI("+RSI+"), MACD("+MACD+"), singnalMACD("+signalMACD+"), bollinger med ("+bolMed+")");
     }
