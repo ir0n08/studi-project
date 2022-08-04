@@ -11,23 +11,10 @@ export default function App() {
 
   return (
     <div className="App">
+   
       <Navbar />
 
-      
 
-      < Stack
-        direction="row"
-        justifyContent="space-around"
-        spacing={
-          2
-        } >
-        <SelectionCard />
-        <SelectionCard />
-        <SelectionCard />
-        <SelectionCard />
-        <SelectionCard />
-
-      </Stack>
       <Graph />
 
     </div>
