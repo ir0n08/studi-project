@@ -2,40 +2,44 @@ import React from "react";
 import GraphMenu from './GraphMenu';
 import { Chart } from "react-google-charts";
 //import {json-loader} from "json-loader";
-import { stockData } from "../../../stockDataS";
-import { arrStocks, Stocks } from "./Test";
+import { stockData } from "../../../stockData";
+import { Stocks, getSingleStock, getClosingByDay, getStockNames } from "./Test";
 
+//console.log(stockData);
+export const startDay = '2020-03-01'; // 2be replace by input data
+export const endDay = '2020-07-01';
+export const cStockID = 'DE0008404005'; //allian & 2be replaced
+export const medianDays = 200;
+export const bolFactor = 2; // factor (k) for bollinger bander; 2 = 95% confidence 
 
+export const options = {
+  legend: 'bottom',
+  hAxis: {
+    title: "Datum",
+  },
+  vAxis: {
+    title: "Stock value in EUR",
 
-export const data = [
-    [
-      "Date",
-      "Aktie " + stockData.name,
-    ],
-    ["2020-05-01", 34.7],
-    ["2020-05-02", 37.8],
-    ["2020-05-03", 37.8],
-    ["2020-05-04", 34.8],
-    ["2020-05-05", 33.8],
-    ["2020-05-06", 37.8],
-    ["2020-05-07", 37.8],
-    ["2020-05-08", 31.8],
-    ["2020-05-09", 35.8],
-    ["2020-05-10", 37.8],
-    ["2020-05-11", 37.8],
-    ["2020-05-12", 70.8],
-    ["2020-05-13", 74.8],
-    ["2020-05-14", 77.8],
-    ["2020-05-15", 72.8],
-  ];
+  },
+  intervals: { 'color':'series-color',  },
+  interval: {
+    'i0': { 'style':'boxes', 'fillOpacity':1 },
+    'i1': { 'style':'boxes', 'fillOpacity':1 },
 
-  export const options = {
-    chart: {
-      title: "Box Office Earnings in First Two Weeks of Opening",
-      subtitle: "in millions of dollars (USD) ",
-    },
-  };
-  
+    'i2': { 'style':'area', 'curveType':'function', 'fillOpacity':0.3 }
+    //'b1': { 'style':'area', 'curveType':'function', 'fillOpacity':0.3 }
+  },
+  series: {
+    0: { color: '#D9544C' }, // actuale stock value
+    1: { curveType: "function", color: '#49baff', opacity: 1}, // average line
+    //2: { curveType: "function", color: '#8677F2', opacity: 0.1}, // lower bollinger
+    2: { curveType: "function", color: '#B588D4', opacity: 1}//, // average bollinger
+   // 4: { curveType: "function", color: '#FF00D4', opacity: 0.1} // upper bollinger
+  },
+};
+
+export const cStockData = getSingleStock(cStockID,stockData);
+export const stockClosingData = getClosingByDay(cStockData,startDay,endDay);
 
 export default function Graph(){
 
@@ -45,10 +49,10 @@ export default function Graph(){
             <Stocks />
             <div id="chartArea">
             <Chart
-            chartType="Line"
+            chartType="LineChart"
             width="100%"
-            height="400px"
-            data={data}
+            height="600px"
+            data={stockClosingData}
             options={options}
             />
             </div>
