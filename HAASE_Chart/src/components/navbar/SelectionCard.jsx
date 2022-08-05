@@ -1,17 +1,34 @@
-import React from 'react';
+import * as React from 'react';
 import {FormControl, MenuItem, Select, Card, Box, Grid, Stack, Button} from '@mui/material'
 import InputLabel from '@mui/material/InputLabel';
+import {getStockNames } from '../graphs/Test';
+import { stockData } from '../../../stockData';
+
+
 
 
 export default function SelectionCard() {
+    
+    let companyNames = [];
+    for (let item of getStockNames(stockData)){
+        companyNames.push(<MenuItem value={item.isin}>{item.name}</MenuItem>)
+    }
 
-    let name = "";
-    let colour = "";
-    let graph = "";
+    const [stockName, setStockName] = React.useState('');
+    const handleSelectName = (event) => {
+        setStockName(event.target.value);
+      };
 
-    let handleSelectColour = () => {};
-    let handleSelectName = () => {};
-    let handleSelectGraph = () => {};
+      const [stockColour, setStockColour] = React.useState('');
+      const handleSelectColour = (event) => {
+          setStockColour(event.target.value);
+        };
+
+        const [stockGraph, setStockGraph] = React.useState('');
+    const handleSelectGraph = (event) => {
+        setStockGraph(event.target.value);
+      };
+
 
 
     return (
@@ -48,32 +65,51 @@ export default function SelectionCard() {
                     <FormControl sx={{  minWidth: 120 }} size="small">
                         <InputLabel id={"select-company"}>Company</InputLabel>
                         <Select
-                            lableId="select-company"
+                            lableid="select-company"
                             id="select-company"
-                            value={name}
+                            value={stockName}
                             lable="company"
-                            onChange={handleSelectName} // @TODO write handler
-                        ></Select>
+                            onChange={handleSelectName}
+                        >
+                           {companyNames} 
+                        </Select>
+                         
                     </FormControl>
                     <FormControl sx={{  minWidth: 120 }} size="small">
                         <InputLabel id="select-graphtype">Graph</InputLabel>
                         <Select
-                            lableId = "select-graphtype"
+                            lableid = "select-graphtype"
                             id = "select-graphtype"
-                            value={graph}
+                            value={stockGraph}
                             lable="graphtype"
-                            onChange={handleSelectGraph} // @TODO write handler
-                        ></Select>
+                            onChange={handleSelectGraph}
+                        >
+                            <MenuItem value={0}>Kerzenchart</MenuItem>
+                            <MenuItem value={1}>Gleitender Durchschnitt</MenuItem>
+                            <MenuItem value={2}>MACD-Indikator</MenuItem>
+                            <MenuItem value={3}>RS-Indikator</MenuItem>
+                            <MenuItem value={4}>Bollinger-Bänder</MenuItem>   
+                        </Select>
                     </FormControl>
                     <FormControl sx={{  minWidth: 120 }} size="small">
                         <InputLabel id="select-colour">colour</InputLabel>
                         <Select
-                            lableId="select-colour"
+                            lableid="select-colour"
                             id="select-colour"
-                            value={colour}
+                            value={stockColour}
                             lable="colour"
-                            onChange={handleSelectColour} // @TODO write handler
-                        ></Select>
+                            onChange={handleSelectColour}
+                        >
+                            <MenuItem value={'#55EAB1'}>Türkis</MenuItem>
+                            <MenuItem value={'#3028EB'}>Blau</MenuItem>
+                            <MenuItem value={'#60EB00'}>Hellgrün</MenuItem>
+                            <MenuItem value={'#EB3C17'}>Rot</MenuItem>
+                            <MenuItem value={'#FFEB02'}>Gelb</MenuItem>
+                            <MenuItem value={'#EBC50C'}>Orange</MenuItem>
+                            <MenuItem value={'#4B006B'}>Lila</MenuItem>
+                            <MenuItem value={'#051700'}>Schwarz</MenuItem>
+                            <MenuItem value={'#858585'}>Grau</MenuItem>
+                        </Select>
                     </FormControl>
                 </Stack>
             </Box>

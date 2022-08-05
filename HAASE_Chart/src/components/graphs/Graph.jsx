@@ -1,14 +1,22 @@
-import React from "react";
+import * as React from 'react';
 import GraphMenu from './GraphMenu';
 import { Chart } from "react-google-charts";
 //import {json-loader} from "json-loader";
 import { stockData } from "../../../stockData";
 import { Stocks, getSingleStock, getClosingByDay, getStockNames } from "./Test";
+import ReactDOM from "react-dom/client";
+import { useState } from 'react';
 
 //console.log(stockData);
 export const startDay = '2020-03-01'; // 2be replace by input data
 export const endDay = '2020-07-01';
-export const cStockID = 'DE0008404005'; //allian & 2be replaced
+
+
+
+export let cStockID = 'DE0008404005'//React.useState.stockName; //test
+
+
+
 export const medianDays = 200;
 export const bolFactor = 2; // factor (k) for bollinger bander; 2 = 95% confidence 
 

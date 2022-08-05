@@ -47,7 +47,7 @@ export function getClosingByDay(stockData,startDate,endDate) {
     {id: "i2", type: "number", label: "Oberes Bollinger Band", role:"interval"}
   ]];
 
-  
+
   // funct get slow
 
 
