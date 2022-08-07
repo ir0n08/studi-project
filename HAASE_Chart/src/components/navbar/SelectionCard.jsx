@@ -1,10 +1,13 @@
 import * as React from 'react';
+import * as ReactDOM from 'react-dom/client';
+import { Chart } from "react-google-charts";
 import {FormControl, MenuItem, Select, Card, Box, Grid, Stack, Button} from '@mui/material'
 import InputLabel from '@mui/material/InputLabel';
-import {getStockNames } from '../graphs/Test';
+import {getStockNames,getSingleStock, getClosingByDay } from '../graphs/Test';
 import { stockData } from '../../../stockData';
 
-
+export var chartInput = {};
+Object.assign(chartInput, { id: 'DE0008404005',start:'2020-03-01',end:'2020-07-01',mcas:false,median:false,medianInt:200,color:'#ff0007'} );
 
 
 export default function SelectionCard() {
@@ -16,16 +19,21 @@ export default function SelectionCard() {
 
     const [stockName, setStockName] = React.useState('');
     const handleSelectName = (event) => {
+        //console.log(event.target.value);
         setStockName(event.target.value);
+        Object.assign(chartInput, { id: event.target.value} );
+        updateChart(chartInput);
       };
 
-      const [stockColour, setStockColour] = React.useState('');
-      const handleSelectColour = (event) => {
-          setStockColour(event.target.value);
-        };
+    const [stockColour, setStockColour] = React.useState('');
+    const handleSelectColour = (event) => {
+        setStockColour(event.target.value);
+        Object.assign(chartInput, { color: event.target.value} );
+        updateChart(chartInput);
+    };
 
         const [stockGraph, setStockGraph] = React.useState('');
-    const handleSelectGraph = (event) => {
+        const handleSelectGraph = (event) => {
         setStockGraph(event.target.value);
       };
 
@@ -39,14 +47,11 @@ export default function SelectionCard() {
             spacing={1}
 
         >
-            <Button variant="outlined" color="error" sx={{width:100, }}>
-                delete
-            </Button>
 
             <Box
                 sx={{
                     boxShadow: 3,
-                    width: 130,
+                    width: 285,
                     height: 155,
                     border: '2px grey',
                     // margin: theme.spacing(1)
@@ -62,7 +67,7 @@ export default function SelectionCard() {
                     alignItems="center"
                     spacing={2}
                 >
-                    <FormControl sx={{  minWidth: 120 }} size="small">
+                    <FormControl sx={{  minWidth: 285 }} size="small">
                         <InputLabel id={"select-company"}>Company</InputLabel>
                         <Select
                             lableid="select-company"
@@ -75,7 +80,7 @@ export default function SelectionCard() {
                         </Select>
                          
                     </FormControl>
-                    <FormControl sx={{  minWidth: 120 }} size="small">
+                    <FormControl sx={{  minWidth: 285 }} size="small">
                         <InputLabel id="select-graphtype">Graph</InputLabel>
                         <Select
                             lableid = "select-graphtype"
@@ -91,7 +96,7 @@ export default function SelectionCard() {
                             <MenuItem value={4}>Bollinger-Bänder</MenuItem>   
                         </Select>
                     </FormControl>
-                    <FormControl sx={{  minWidth: 120 }} size="small">
+                    <FormControl sx={{  minWidth: 285 }} size="small">
                         <InputLabel id="select-colour">colour</InputLabel>
                         <Select
                             lableid="select-colour"
@@ -119,4 +124,65 @@ export default function SelectionCard() {
         
         
 
+}
+
+
+
+
+/*
+function setStockNameGlobal(name) {
+    console.log("setSN:"+name);
+    //var data = google.visualization.arrayToDataTable(r.d);
+    //var chart = new google.visualization.LineChart($("#chartArea")[0]);
+    //chart.draw(data, options);
+    Object.assign(resObj, { id: name} );
+
+    updateChart(name,'2020-03-01','2020-07-01');
+}*/
+
+function updateChart(i)  {
+
+    var cStockData = getSingleStock(i.id,stockData);
+    let stockClosingData = getClosingByDay(cStockData,i.start,i.end);
+    
+    var options = {
+        legend: 'bottom',
+        hAxis: {
+            title: "Datum",
+        },
+        vAxis: {
+            title: "Stock value in EUR",
+        
+        },
+        intervals: { 'color':'series-color',  },
+        interval: {
+            'i0': { 'style':'boxes', 'fillOpacity':1 },
+            'i1': { 'style':'boxes', 'fillOpacity':1 },
+        
+            'i2': { 'style':'area', 'curveType':'function', 'fillOpacity':0.3 }
+            //'b1': { 'style':'area', 'curveType':'function', 'fillOpacity':0.3 }
+        },
+        series: {
+            0: { color: i.color }, // actuale stock value
+            1: { curveType: "function", color: '#49baff', opacity: 1}, // average line
+            //2: { curveType: "function", color: '#8677F2', opacity: 0.1}, // lower bollinger
+            2: { curveType: "function", color: '#B588D4', opacity: 1}//, // average bollinger
+            // 4: { curveType: "function", color: '#FF00D4', opacity: 0.1} // upper bollinger
+        },
+    };
+
+    const root = ReactDOM.createRoot(
+        document.getElementById('chartArea')
+    );
+    var ele = (
+        <Chart
+        chartType="LineChart"
+        width="100%"
+        height="600px"
+        data={stockClosingData}
+        options={options}
+        />
+    );
+    root.render(ele);
+   
 }
