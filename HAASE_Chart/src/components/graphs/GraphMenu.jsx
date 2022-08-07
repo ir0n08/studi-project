@@ -6,18 +6,19 @@ import { DesktopDatePicker } from '@mui/x-date-pickers/DesktopDatePicker';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import TextField from '@mui/material/TextField';
+import enLocale from 'date-fns/locale/en-GB';
 
 
 
 export default function GraphMenu(){
 
     
-    const [startdatum, setStartdatum] = React.useState(new Date('2014-08-18T21:11:54'));
+    const [startdatum, setStartdatum] = React.useState(new Date('2022-05-30'));
     const handleStartdatum = (newStartdatum) => {
         setStartdatum(newStartdatum);
       };
 
-      const [enddatum, setEnddatum] = React.useState(new Date('2014-08-18T21:11:54'));
+      const [enddatum, setEnddatum] = React.useState(new Date('2022-06-13'));
       const handleEnddatum = (newEnddatum) => {
           setEnddatum(newEnddatum);
         };
@@ -25,8 +26,11 @@ export default function GraphMenu(){
     
 
     return(
-        
-             <LocalizationProvider dateAdapter={AdapterDateFns}>
+      <div>
+      <h4>Beachten Sie, dass die Börsen Samstag und Sonntag geschlossen sind und somit an diesen Tagen keine Werte existieren. </h4>
+      <h4>Beginn der Werte-Erhebung: 2000-01-03.</h4>
+      <h4>Derzeitiges Ende der Werte-Erhebung: 2022-06-17.</h4>    
+             <LocalizationProvider dateAdapter={AdapterDateFns} locale={enLocale}>
       <Stack spacing={3}>
         <DesktopDatePicker
           label="Startdatum"
@@ -44,7 +48,7 @@ export default function GraphMenu(){
         />
         </Stack>
         </LocalizationProvider>
-        
+     </div>   
     );
 
 }

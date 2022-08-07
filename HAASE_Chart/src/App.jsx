@@ -9,13 +9,16 @@ import GraphMenu from './components/graphs/GraphMenu';
 
 export default function App() {
 
+  const [selection, setSelection] = useState([])
+
+
+
   return (
     <div className="App">
    
       <Navbar />
+
       <GraphMenu/>
-
-
 
       <Graph />
 
