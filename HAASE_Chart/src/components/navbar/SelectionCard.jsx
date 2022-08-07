@@ -3,11 +3,10 @@ import * as ReactDOM from 'react-dom/client';
 import { Chart } from "react-google-charts";
 import {FormControl, MenuItem, Select, Card, Box, Grid, Stack, Button} from '@mui/material'
 import InputLabel from '@mui/material/InputLabel';
-import {getStockNames,getSingleStock, getClosingByDay } from '../graphs/Test';
+import {getStockNames,getSingleStock, getClosingByDay } from '../graphs/Functions';
+import {chartInput } from '../graphs/Graph';
+import {updateChart} from '../graphs/UpdateGraph';
 import { stockData } from '../../../stockData';
-
-export var chartInput = {};
-Object.assign(chartInput, { id: 'DE0008404005',start:'2020-03-01',end:'2020-07-01',mcas:false,median:false,medianInt:200,color:'#ff0007'} );
 
 
 export default function SelectionCard() {
@@ -140,49 +139,4 @@ function setStockNameGlobal(name) {
     updateChart(name,'2020-03-01','2020-07-01');
 }*/
 
-function updateChart(i)  {
 
-    var cStockData = getSingleStock(i.id,stockData);
-    let stockClosingData = getClosingByDay(cStockData,i.start,i.end);
-    
-    var options = {
-        legend: 'bottom',
-        hAxis: {
-            title: "Datum",
-        },
-        vAxis: {
-            title: "Stock value in EUR",
-        
-        },
-        intervals: { 'color':'series-color',  },
-        interval: {
-            'i0': { 'style':'boxes', 'fillOpacity':1 },
-            'i1': { 'style':'boxes', 'fillOpacity':1 },
-        
-            'i2': { 'style':'area', 'curveType':'function', 'fillOpacity':0.3 }
-            //'b1': { 'style':'area', 'curveType':'function', 'fillOpacity':0.3 }
-        },
-        series: {
-            0: { color: i.color }, // actuale stock value
-            1: { curveType: "function", color: '#49baff', opacity: 1}, // average line
-            //2: { curveType: "function", color: '#8677F2', opacity: 0.1}, // lower bollinger
-            2: { curveType: "function", color: '#B588D4', opacity: 1}//, // average bollinger
-            // 4: { curveType: "function", color: '#FF00D4', opacity: 0.1} // upper bollinger
-        },
-    };
-
-    const root = ReactDOM.createRoot(
-        document.getElementById('chartArea')
-    );
-    var ele = (
-        <Chart
-        chartType="LineChart"
-        width="100%"
-        height="600px"
-        data={stockClosingData}
-        options={options}
-        />
-    );
-    root.render(ele);
-   
-}

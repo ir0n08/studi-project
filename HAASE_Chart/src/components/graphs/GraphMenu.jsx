@@ -26,7 +26,7 @@ export default function GraphMenu(){
 
     return(
         
-             <LocalizationProvider dateAdapter={AdapterDateFns}>
+      <LocalizationProvider dateAdapter={AdapterDateFns}>
       <Stack spacing={3}>
         <DesktopDatePicker
           label="Startdatum"

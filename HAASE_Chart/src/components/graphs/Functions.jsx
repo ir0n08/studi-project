@@ -1,16 +1,4 @@
 import React from "react";
-//import { stockData } from "../../../stockData";
-import {bolFactor, medianDays} from "./Graph"; // check if solved with func-args or global vals
-
-
-export function transStocks(stockData) {
-  //console.log(stockData);
-  //let objStock = stockData[0]; // write search func in json data
-  
-  //return Object.values(objStock);
-  return stockData;
-}
-
 
 
 export function getSingleStock(id,stockData) {
@@ -27,24 +15,42 @@ export function getSingleStock(id,stockData) {
   
 }
 
-export function getClosingByDay(stockData,startDate,endDate) {
+export function getClosingByDay(stockData,startDate,endDate,median=false,medianDays=200,bol=false,bolFactor=2) {
 
-  //let [isin, nameStock, symbol, prices] = transStocks(stockData);
   stockData = Object.values(stockData);
-  console.log(stockData);
+
   let [isin, nameStock, symbol, prices] = stockData;
 
   var tempArray = []; var arrGD = [];var last12 = [];var last26 = [];var lastSignal = [];var lastRSI = []; var arrBollinger = []; 
   let vGD = 0; let fEMA = 0; let sEMA = 0; let MACD = 0; let signalMACD = 0; let closingDayBefore = prices[0].closing; let RSI = 0; let bolMed = 0; let bolLow = 0; let bolUpr = 0; let bolStdDev = 0;
-  var resArray = [[{ 
+  tempArray.push( {type: "date", label: "Datum"}, {type: "number", label:"Stock price"},{id: "i0", type: "number", role:"interval"},{id: "i1", type: "number", role:"interval"});
+
+  if(median == true) {
+    tempArray.push({type: "number", label: medianDays +" Tage gleitender Durchschnitt"});
+  }
+
+  if(bol == true) {
+    tempArray.push({type: "number", label: "Mittleres Bollinger Band"});
+    tempArray.push({id: "i2", type: "number", label: "Unteres Bollinger Band", role:"interval"});
+    tempArray.push({id: "i2", type: "number", label: "Oberes Bollinger Band", role:"interval"});
+  }
+
+  var resArray = [tempArray];
+  console.log(resArray);
+  
+  // init MCAS Output Array
+  var resMCAS = [[{ 
     type: "string", label: "Datum"}, 
-    {type: "number", label:"Stock price"},
-    {id: "i0", type: "number", role:"interval"},
-    {id: "i1", type: "number", role:"interval"},
-    {type: "number", label: medianDays +" Tage gleitender Durchschnitt"},
-    {type: "number", label: "Mittleres Bollinger Band"},
-    {id: "i2", type: "number", label: "Unteres Bollinger Band", role:"interval"},
-    {id: "i2", type: "number", label: "Oberes Bollinger Band", role:"interval"}
+    {type: "number", label:"MCAS"},
+    {type: "number", label:"Signal"}
+  ]];
+
+  // init RSI Output Array
+  var resRSI = [[{ 
+    type: "string", label: "Datum"}, 
+    {type: "number", label:"Unter Grenze"},
+    {type: "number", label:"RSI"},
+    {type: "number", label:"Obere Grenze"}
   ]];
 
 
@@ -62,6 +68,8 @@ export function getClosingByDay(stockData,startDate,endDate) {
     [sEMA,last26] = getEMA(dayData.closing,last26,26);
     MACD = fEMA - sEMA; // MACD = fast EMA minus slow EMA
     [signalMACD, lastSignal] = getEMA(MACD,lastSignal,9);
+    
+    
 
     // get RSI data
     let stockChange = dayData.closing - closingDayBefore;
@@ -76,13 +84,30 @@ export function getClosingByDay(stockData,startDate,endDate) {
     
 
     if(!(dayData.date < startDate || dayData.date > endDate)) {
-      tempArray = [dayData.date,dayData.closing,dayData.low,dayData.high,vGD,bolMed,bolLow,bolUpr];
+      tempArray = [new Date(dayData.date),dayData.closing,dayData.low,dayData.high];
+      
+      if(median == true) {
+        tempArray.push(vGD);
+      }
+    
+      if(bol == true) {
+        tempArray.push(bolMed,bolLow,bolUpr);
+      }
       resArray.push(tempArray);
-      console.log(dayData.date+": RSI("+RSI+"), MACD("+MACD+"), singnalMACD("+signalMACD+"), bollinger med ("+bolMed+")");
+
+      // create MCAS output
+      tempArray = [dayData.date,MACD,signalMACD];
+      resMCAS.push(tempArray);
+
+      //create RSI output
+      tempArray = [dayData.date,30,RSI,70];
+      resRSI.push(tempArray);
+
+      //console.log(dayData.date+": RSI("+RSI+"), MACD("+MACD+"), singnalMACD("+signalMACD+"), bollinger med ("+bolMed+")");
     }
    
   });
-  return resArray;
+  return [resArray,resMCAS,resRSI];
 }
 
 export function standardDeviation(arr,xline) {
