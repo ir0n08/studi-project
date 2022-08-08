@@ -6,7 +6,7 @@ import SelectionCard from './components/navbar/SelectionCard';
 import Navbar from './components/navbar/Navbar';
 import { Box, Button, Card, FormControl, Grid, MenuItem, Select, Stack } from "@mui/material";
 import GraphMenu from './components/graphs/GraphMenu';
-import AutoLayoutSizingExample from './components/navbar/testRowCol';
+
 
 export default function App() {
 

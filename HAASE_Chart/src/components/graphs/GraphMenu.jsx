@@ -27,12 +27,10 @@ export default function GraphMenu() {
 
   return (
     <div>
-
-      <Box sx={{ flexGrow: 1 }}>
-        < Grid container spacing={1}>
+      <Box sx={{ display:"flex", justifyContent:"center", gap:"50px", marginTop:"40px"}}>
           <LocalizationProvider dateAdapter={AdapterDateFns} locale={enLocale}>
 
-            <Grid item xs={5}>
+            <Box>
               <DesktopDatePicker
                 label="Startdatum"
                 inputFormat="yyyy-MM-dd"
@@ -40,8 +38,8 @@ export default function GraphMenu() {
                 onChange={handleStartdatum}
                 renderInput={(params) => <TextField {...params} />}
               />
-            </Grid>
-            <Grid item xs={5}>
+            </Box>
+            <Box>
               <DesktopDatePicker
                 label="Enddatum"
                 inputFormat="yyyy-MM-dd"
@@ -49,11 +47,10 @@ export default function GraphMenu() {
                 onChange={handleEnddatum}
                 renderInput={(params) => <TextField {...params} />}
               />
-            </Grid>
+            </Box>
 
           </LocalizationProvider>
-        </Grid>
-      </Box>
+        </Box>
     </div>
   );
 }
