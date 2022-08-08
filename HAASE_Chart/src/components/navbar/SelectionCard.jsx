@@ -3,9 +3,9 @@ import * as ReactDOM from 'react-dom/client';
 import { Chart } from "react-google-charts";
 import { FormControl, MenuItem, Select, Card, Box, Grid, Stack, Button, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography } from '@mui/material'
 import InputLabel from '@mui/material/InputLabel';
-import {getStockNames,getSingleStock, getClosingByDay } from '../graphs/Functions';
-import {chartInput } from '../graphs/Graph';
-import {updateChart} from '../graphs/UpdateGraph';
+import { getStockNames, getSingleStock, getClosingByDay } from '../graphs/Functions';
+import { chartInput } from '../graphs/Graph';
+import { updateChart } from '../graphs/UpdateGraph';
 import { stockData } from '../../../stockData';
 import { Checkbox } from '@mui/material';
 import FormGroup from '@mui/material/FormGroup';
@@ -73,6 +73,12 @@ export default function SelectionCard() {
 
 
     //UseStates für Farbauswahl der verschiedenen Graphen
+    const [kursColour, setKursColour] = React.useState('');
+    const handleKursColour = (event) => {
+        setKursColour(event.target.value);
+        Object.assign(chartInput, { color: event.target.value });
+        updateChart(chartInput);
+    };
     const [kerzenchartColour, setKerzenchartColour] = React.useState('');
     const handleKerzenchartColour = (event) => {
         setKerzenchartColour(event.target.value);
@@ -113,20 +119,14 @@ export default function SelectionCard() {
 
 
     return (
-        <Box sx={{display:"flex", justifyContent:"center"}}>
-        <Box sx={{margin:"10px", display:"flex", flexDirection:"row", gap:"40px"}}>
-            <Box>
-                <Stack
-                    direction="column"
-                    justifyContent="left"
-                    alignItems="left"
-                    spacing={1}
-                >
+        <Box sx={{ display: "flex", justifyContent: "center" }}>
+            <Box sx={{ margin: "10px", display: "flex", flexDirection: "row", gap: "40px" }}>
+                <Box>
                     <Box
                         sx={{
-                            boxShadow: 3,
+                            
                             width: 285,
-                            height: "100%",
+                            
                             border: '2px grey',
                             // margin: theme.spacing(1)
                             p: {
@@ -141,159 +141,182 @@ export default function SelectionCard() {
                             alignItems="center"
                             spacing={2}
                         >
-                            <FormControl sx={{ minWidth: 285 }} size="small">
-                                <InputLabel id={"select-company"}>Company</InputLabel>
-                                <Select
-                                    lableid="select-company"
-                                    id="select-company"
-                                    value={stockName}
-                                    lable="company"
-                                    onChange={handleSelectName}
-                                >
-                                    {companyNames}
-                                </Select>
-
-                            </FormControl>
+                            <Box>
+                                <FormControl sx={{ minWidth: 285 }} size="small">
+                                    <InputLabel id={"select-company"}>Aktie</InputLabel>
+                                    <Select
+                                        lableid="select-company"
+                                        id="select-company"
+                                        value={stockName}
+                                        lable="company"
+                                        onChange={handleSelectName}
+                                    >
+                                        {companyNames}
+                                    </Select>
+                                </FormControl>
+                            </Box>
+                            <Box>
+                                <FormControl sx={{ minWidth: 285 }} size="small">
+                                    <InputLabel id={"select-company"}>Einfärbung Aktienkurs</InputLabel>
+                                    <Select
+                                        lableid="select-kurs-colour"
+                                        id="select-kurs-colour"
+                                        value={kursColour}
+                                        lable="company"
+                                        onChange={handleKursColour}
+                                    >
+                                        <MenuItem value={'#55EAB1'}>Türkis</MenuItem>
+                                        <MenuItem value={'#3028EB'}>Blau</MenuItem>
+                                        <MenuItem value={'#60EB00'}>Hellgrün</MenuItem>
+                                        <MenuItem value={'#EB3C17'}>Rot</MenuItem>
+                                        <MenuItem value={'#FFEB02'}>Gelb</MenuItem>
+                                        <MenuItem value={'#EBC50C'}>Orange</MenuItem>
+                                        <MenuItem value={'#4B006B'}>Lila</MenuItem>
+                                        <MenuItem value={'#051700'}>Schwarz</MenuItem>
+                                        <MenuItem value={'#858585'}>Grau</MenuItem>
+                                    </Select>
+                                </FormControl>
+                            </Box>
                         </Stack>
                     </Box>
-                </Stack>
-            </Box>
-            <Box sx={{margin:"10px", display:"flex", flexDirection:"column", gap:"10px"}}>
-            <Box sx={{display:"flex", flexDirection:"row", alignItems:"center", gap: "20px", width:"500px", justifyContent: "space-between"}}>
-                <FormControlLabel control={<Checkbox sx={{marginRight:"0"}} checked={kerzenchartCheck} onChange={toggleKerzenchartCheck} />} />
-                <Typography variant='h6'>
-                    Kerzenchart
-                </Typography>
-                <FormControl sx={{ minWidth: 120 }} size="small">
-                    <InputLabel id="select-kerzenchart-colour">colour</InputLabel>
-                    <Select
-                        lableid="select-kerzenchart-colour"
-                        id="select-kerzenchart-colour"
-                        value={kerzenchartColour}
-                        lable="kerzenchartColour"
-                        onChange={handleKerzenchartColour}
-                    >
-                        <MenuItem value={'#55EAB1'}>Türkis</MenuItem>
-                        <MenuItem value={'#3028EB'}>Blau</MenuItem>
-                        <MenuItem value={'#60EB00'}>Hellgrün</MenuItem>
-                        <MenuItem value={'#EB3C17'}>Rot</MenuItem>
-                        <MenuItem value={'#FFEB02'}>Gelb</MenuItem>
-                        <MenuItem value={'#EBC50C'}>Orange</MenuItem>
-                        <MenuItem value={'#4B006B'}>Lila</MenuItem>
-                        <MenuItem value={'#051700'}>Schwarz</MenuItem>
-                        <MenuItem value={'#858585'}>Grau</MenuItem>
-                    </Select>
-                </FormControl>
-                </Box>
 
-                <Box sx={{display:"flex", flexDirection:"row", alignItems:"center", gap: "20px", width:"500px", justifyContent: "space-between"}}>
-                <FormControlLabel control={<Checkbox checked={gleitenderDurchschnittCheck} onChange={toggleGleitenderDurchschnitt} />} />
-                <Typography variant='h6'>
-                    Gleitender Durchschnitt
-                </Typography>
-                <FormControl sx={{ minWidth: 120 }} size="small">
-                    <InputLabel id="select-gleitenderDurchschnitt-colour">colour</InputLabel>
-                    <Select
-                        lableid="select-gleitenderDurchschnitt-colour"
-                        id="select-gleitenderDurchschnitt-colour"
-                        value={gleitenderDurchschnittColour}
-                        lable="gleitenderDurchschnittColour"
-                        onChange={handleGleitenderDurchschnittColour}
-                    >
-                        <MenuItem value={'#55EAB1'}>Türkis</MenuItem>
-                        <MenuItem value={'#3028EB'}>Blau</MenuItem>
-                        <MenuItem value={'#60EB00'}>Hellgrün</MenuItem>
-                        <MenuItem value={'#EB3C17'}>Rot</MenuItem>
-                        <MenuItem value={'#FFEB02'}>Gelb</MenuItem>
-                        <MenuItem value={'#EBC50C'}>Orange</MenuItem>
-                        <MenuItem value={'#4B006B'}>Lila</MenuItem>
-                        <MenuItem value={'#051700'}>Schwarz</MenuItem>
-                        <MenuItem value={'#858585'}>Grau</MenuItem>
-                    </Select>
-                </FormControl>
                 </Box>
+                <Box sx={{ margin: "10px", display: "flex", flexDirection: "column", gap: "10px" }}>
+                    <Box sx={{ display: "flex", flexDirection: "row", alignItems: "center", gap: "20px", width: "500px", justifyContent: "space-between" }}>
+                        <FormControlLabel control={<Checkbox sx={{ marginRight: "0" }} checked={kerzenchartCheck} onChange={toggleKerzenchartCheck} />} />
+                        <Typography variant='h6'>
+                            Kerzenchart
+                        </Typography>
+                        <FormControl sx={{ minWidth: 120 }} size="small">
+                            <InputLabel id="select-kerzenchart-colour">Einfärbung</InputLabel>
+                            <Select
+                                lableid="select-kerzenchart-colour"
+                                id="select-kerzenchart-colour"
+                                value={kerzenchartColour}
+                                lable="kerzenchartColour"
+                                onChange={handleKerzenchartColour}
+                            >
+                                <MenuItem value={'#55EAB1'}>Türkis</MenuItem>
+                                <MenuItem value={'#3028EB'}>Blau</MenuItem>
+                                <MenuItem value={'#60EB00'}>Hellgrün</MenuItem>
+                                <MenuItem value={'#EB3C17'}>Rot</MenuItem>
+                                <MenuItem value={'#FFEB02'}>Gelb</MenuItem>
+                                <MenuItem value={'#EBC50C'}>Orange</MenuItem>
+                                <MenuItem value={'#4B006B'}>Lila</MenuItem>
+                                <MenuItem value={'#051700'}>Schwarz</MenuItem>
+                                <MenuItem value={'#858585'}>Grau</MenuItem>
+                            </Select>
+                        </FormControl>
+                    </Box>
 
-                <Box sx={{display:"flex", flexDirection:"row", alignItems:"center", gap: "20px", width:"500px", justifyContent: "space-between"}}>
-                <FormControlLabel control={<Checkbox checked={macdCheck} onChange={toggleMacdCheck} />} />
-                <Typography variant='h6'>
-                    MACD-Indikator
-                </Typography>
-                <FormControl sx={{ minWidth: 120 }} size="small">
-                    <InputLabel id="select-MACD-colour">colour</InputLabel>
-                    <Select
-                        lableid="select-MACD-colour"
-                        id="select-MACD-colour"
-                        value={macdColour}
-                        lable="macdColour"
-                        onChange={handleMacdColour}
-                    >
-                        <MenuItem value={'#55EAB1'}>Türkis</MenuItem>
-                        <MenuItem value={'#3028EB'}>Blau</MenuItem>
-                        <MenuItem value={'#60EB00'}>Hellgrün</MenuItem>
-                        <MenuItem value={'#EB3C17'}>Rot</MenuItem>
-                        <MenuItem value={'#FFEB02'}>Gelb</MenuItem>
-                        <MenuItem value={'#EBC50C'}>Orange</MenuItem>
-                        <MenuItem value={'#4B006B'}>Lila</MenuItem>
-                        <MenuItem value={'#051700'}>Schwarz</MenuItem>
-                        <MenuItem value={'#858585'}>Grau</MenuItem>
-                    </Select>
-                </FormControl>
-                </Box>
+                    <Box sx={{ display: "flex", flexDirection: "row", alignItems: "center", gap: "20px", width: "500px", justifyContent: "space-between" }}>
+                        <FormControlLabel control={<Checkbox checked={gleitenderDurchschnittCheck} onChange={toggleGleitenderDurchschnitt} />} />
+                        <Typography variant='h6'>
+                            Gleitender Durchschnitt
+                        </Typography>
+                        <FormControl sx={{ minWidth: 120 }} size="small">
+                            <InputLabel id="select-gleitenderDurchschnitt-colour">Einfärbung</InputLabel>
+                            <Select
+                                lableid="select-gleitenderDurchschnitt-colour"
+                                id="select-gleitenderDurchschnitt-colour"
+                                value={gleitenderDurchschnittColour}
+                                lable="gleitenderDurchschnittColour"
+                                onChange={handleGleitenderDurchschnittColour}
+                            >
+                                <MenuItem value={'#55EAB1'}>Türkis</MenuItem>
+                                <MenuItem value={'#3028EB'}>Blau</MenuItem>
+                                <MenuItem value={'#60EB00'}>Hellgrün</MenuItem>
+                                <MenuItem value={'#EB3C17'}>Rot</MenuItem>
+                                <MenuItem value={'#FFEB02'}>Gelb</MenuItem>
+                                <MenuItem value={'#EBC50C'}>Orange</MenuItem>
+                                <MenuItem value={'#4B006B'}>Lila</MenuItem>
+                                <MenuItem value={'#051700'}>Schwarz</MenuItem>
+                                <MenuItem value={'#858585'}>Grau</MenuItem>
+                            </Select>
+                        </FormControl>
+                    </Box>
 
-                <Box sx={{display:"flex", flexDirection:"row", alignItems:"center", gap: "20px", width:"500px", justifyContent: "space-between"}}>
-                <FormControlLabel control={<Checkbox checked={rsCheck} onChange={toggleRsCheck} />} />
-                <Typography variant='h6'>
-                    RS-Indikator
-                </Typography>
-                <FormControl sx={{ minWidth: 120 }} size="small">
-                    <InputLabel id="select-rs-colour">colour</InputLabel>
-                    <Select
-                        lableid="select-rs-colour"
-                        id="select-rs-colour"
-                        value={rsColour}
-                        lable="rsColour"
-                        onChange={handleRsColour}
-                    >
-                        <MenuItem value={'#55EAB1'}>Türkis</MenuItem>
-                        <MenuItem value={'#3028EB'}>Blau</MenuItem>
-                        <MenuItem value={'#60EB00'}>Hellgrün</MenuItem>
-                        <MenuItem value={'#EB3C17'}>Rot</MenuItem>
-                        <MenuItem value={'#FFEB02'}>Gelb</MenuItem>
-                        <MenuItem value={'#EBC50C'}>Orange</MenuItem>
-                        <MenuItem value={'#4B006B'}>Lila</MenuItem>
-                        <MenuItem value={'#051700'}>Schwarz</MenuItem>
-                        <MenuItem value={'#858585'}>Grau</MenuItem>
-                    </Select>
-                </FormControl>
-                </Box>
+                    <Box sx={{ display: "flex", flexDirection: "row", alignItems: "center", gap: "20px", width: "500px", justifyContent: "space-between" }}>
+                        <FormControlLabel control={<Checkbox checked={macdCheck} onChange={toggleMacdCheck} />} />
+                        <Typography variant='h6'>
+                            MACD-Indikator
+                        </Typography>
+                        <FormControl sx={{ minWidth: 120 }} size="small">
+                            <InputLabel id="select-MACD-colour">Einfärbung</InputLabel>
+                            <Select
+                                lableid="select-MACD-colour"
+                                id="select-MACD-colour"
+                                value={macdColour}
+                                lable="macdColour"
+                                onChange={handleMacdColour}
+                            >
+                                <MenuItem value={'#55EAB1'}>Türkis</MenuItem>
+                                <MenuItem value={'#3028EB'}>Blau</MenuItem>
+                                <MenuItem value={'#60EB00'}>Hellgrün</MenuItem>
+                                <MenuItem value={'#EB3C17'}>Rot</MenuItem>
+                                <MenuItem value={'#FFEB02'}>Gelb</MenuItem>
+                                <MenuItem value={'#EBC50C'}>Orange</MenuItem>
+                                <MenuItem value={'#4B006B'}>Lila</MenuItem>
+                                <MenuItem value={'#051700'}>Schwarz</MenuItem>
+                                <MenuItem value={'#858585'}>Grau</MenuItem>
+                            </Select>
+                        </FormControl>
+                    </Box>
 
-                <Box sx={{display:"flex", flexDirection:"row", alignItems:"center", gap: "20px", width:"500px", justifyContent: "space-between"}}>
-                <FormControlLabel control={<Checkbox checked={bollingerCheck} onChange={toggleBollingerCheck} />} />
-                <Typography variant='h6'>
-                    Bollinger-Bänder
-                </Typography>
-                <FormControl sx={{ minWidth: 120 }} size="small">
-                    <InputLabel id="select-bollinger-colour">colour</InputLabel>
-                    <Select
-                        lableid="select-bollinger-colour"
-                        id="select-bollinger-colour"
-                        value={bollingerColour}
-                        lable="bollingerColour"
-                        onChange={handleBollingerColour}
-                    >
-                        <MenuItem value={'#55EAB1'}>Türkis</MenuItem>
-                        <MenuItem value={'#3028EB'}>Blau</MenuItem>
-                        <MenuItem value={'#60EB00'}>Hellgrün</MenuItem>
-                        <MenuItem value={'#EB3C17'}>Rot</MenuItem>
-                        <MenuItem value={'#FFEB02'}>Gelb</MenuItem>
-                        <MenuItem value={'#EBC50C'}>Orange</MenuItem>
-                        <MenuItem value={'#4B006B'}>Lila</MenuItem>
-                        <MenuItem value={'#051700'}>Schwarz</MenuItem>
-                        <MenuItem value={'#858585'}>Grau</MenuItem>
-                    </Select>
-                </FormControl>
+                    <Box sx={{ display: "flex", flexDirection: "row", alignItems: "center", gap: "20px", width: "500px", justifyContent: "space-between" }}>
+                        <FormControlLabel control={<Checkbox checked={rsCheck} onChange={toggleRsCheck} />} />
+                        <Typography variant='h6'>
+                            RS-Indikator
+                        </Typography>
+                        <FormControl sx={{ minWidth: 120 }} size="small">
+                            <InputLabel id="select-rs-colour">Einfärbung</InputLabel>
+                            <Select
+                                lableid="select-rs-colour"
+                                id="select-rs-colour"
+                                value={rsColour}
+                                lable="rsColour"
+                                onChange={handleRsColour}
+                            >
+                                <MenuItem value={'#55EAB1'}>Türkis</MenuItem>
+                                <MenuItem value={'#3028EB'}>Blau</MenuItem>
+                                <MenuItem value={'#60EB00'}>Hellgrün</MenuItem>
+                                <MenuItem value={'#EB3C17'}>Rot</MenuItem>
+                                <MenuItem value={'#FFEB02'}>Gelb</MenuItem>
+                                <MenuItem value={'#EBC50C'}>Orange</MenuItem>
+                                <MenuItem value={'#4B006B'}>Lila</MenuItem>
+                                <MenuItem value={'#051700'}>Schwarz</MenuItem>
+                                <MenuItem value={'#858585'}>Grau</MenuItem>
+                            </Select>
+                        </FormControl>
+                    </Box>
+
+                    <Box sx={{ display: "flex", flexDirection: "row", alignItems: "center", gap: "20px", width: "500px", justifyContent: "space-between" }}>
+                        <FormControlLabel control={<Checkbox checked={bollingerCheck} onChange={toggleBollingerCheck} />} />
+                        <Typography variant='h6'>
+                            Bollinger-Bänder
+                        </Typography>
+                        <FormControl sx={{ minWidth: 120 }} size="small">
+                            <InputLabel id="select-bollinger-colour">Einfärbung</InputLabel>
+                            <Select
+                                lableid="select-bollinger-colour"
+                                id="select-bollinger-colour"
+                                value={bollingerColour}
+                                lable="bollingerColour"
+                                onChange={handleBollingerColour}
+                            >
+                                <MenuItem value={'#55EAB1'}>Türkis</MenuItem>
+                                <MenuItem value={'#3028EB'}>Blau</MenuItem>
+                                <MenuItem value={'#60EB00'}>Hellgrün</MenuItem>
+                                <MenuItem value={'#EB3C17'}>Rot</MenuItem>
+                                <MenuItem value={'#FFEB02'}>Gelb</MenuItem>
+                                <MenuItem value={'#EBC50C'}>Orange</MenuItem>
+                                <MenuItem value={'#4B006B'}>Lila</MenuItem>
+                                <MenuItem value={'#051700'}>Schwarz</MenuItem>
+                                <MenuItem value={'#858585'}>Grau</MenuItem>
+                            </Select>
+                        </FormControl>
+                    </Box>
                 </Box>
-            </Box>
             </Box>
 
         </Box>
