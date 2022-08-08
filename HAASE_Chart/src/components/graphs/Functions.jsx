@@ -23,14 +23,14 @@ export function getClosingByDay(stockData,startDate,endDate,median=false,medianD
 
   var tempArray = []; var arrGD = [];var last12 = [];var last26 = [];var lastSignal = [];var lastRSI = []; var arrBollinger = []; 
   let vGD = 0; let fEMA = 0; let sEMA = 0; let MACD = 0; let signalMACD = 0; let closingDayBefore = prices[0].closing; let RSI = 0; let bolMed = 0; let bolLow = 0; let bolUpr = 0; let bolStdDev = 0;
-  tempArray.push( {type: "date", label: "Datum"}, {type: "number", label:"Stock price"},{id: "i0", type: "number", role:"interval"},{id: "i1", type: "number", role:"interval"});
+  tempArray.push( {type: "date", label: "Datum"}, {id: "n0",type: "number", label:"Stock price"},{id: "i0", type: "number", role:"interval"},{id: "i1", type: "number", role:"interval"});
 
   if(median == true) {
-    tempArray.push({type: "number", label: medianDays +" Tage gleitender Durchschnitt"});
+    tempArray.push({id: "n1", type: "number", label: medianDays +" Tage gleitender Durchschnitt"});
   }
 
   if(bol == true) {
-    tempArray.push({type: "number", label: "Mittleres Bollinger Band"});
+    tempArray.push({id: "n2", type: "number", label: "Mittleres Bollinger Band"});
     tempArray.push({id: "i2", type: "number", label: "Unteres Bollinger Band", role:"interval"});
     tempArray.push({id: "i2", type: "number", label: "Oberes Bollinger Band", role:"interval"});
   }

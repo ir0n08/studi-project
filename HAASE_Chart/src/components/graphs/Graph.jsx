@@ -1,6 +1,7 @@
 import * as React from 'react';
 import GraphMenu from './GraphMenu';
 import { Chart } from "react-google-charts";
+import { Box } from '@mui/material';
 import { stockData } from "../../../stockData";
 import { Stocks, getSingleStock, getClosingByDay, getStockNames } from "./Functions";
 import ReactDOM from "react-dom/client";
@@ -11,41 +12,45 @@ export const startDay = '2020-03-01'; // 2be replace by input data
 export const endDay = '2020-07-01';
 
 export var chartInput = {};
-Object.assign(chartInput, { id: 'DE0008404005',start:'2020-03-01',end:'2020-07-01',mcas:false,median:true,medianInt:200,bolFactor:2,color:'#ff0007',bol:true} );
+Object.assign(chartInput, { id: 'DE0008404005',start:'2020-03-01',end:'2020-07-01',mcas:false,rsi:false,median:true,medianInt:200,colorMedium:'#3028EB',bolFactor:2,colorBol:'#FFEB02',color:'#051700',bol:true,rsiColor:'#60EB00',mcasColor:'#55EAB1'} );
 
 
-var cStockID = chartInput.id;//'DE0008404005'; 
+var cStockID = chartInput.id; 
 let medianOn = chartInput.median;
-
-
 //export const medianDays = 200;
 //export const bolFactor = 2; // factor (k) for bollinger bander; 2 = 95% confidence 
 
 export var options = {
   legend: 'bottom',
   chartArea: {
-    width: '80%'
+      width: '80%'
   },
-  vAxis: {
-    viewWindowMode: "maximized"
-
+  series : {
+      0: { color: chartInput.color } // actuale stock value
   },
-  intervals: { 'color':'series-color',  },
-  interval: {
-    'i0': { 'style':'boxes', 'fillOpacity':1 },
-    'i1': { 'style':'boxes', 'fillOpacity':1 },
-
-    'i2': { 'style':'area', 'curveType':'function', 'fillOpacity':0.3 }
-    //'b1': { 'style':'area', 'curveType':'function', 'fillOpacity':0.3 }
-  },
-  series: {
-    0: { color: '#D9544C' }, // actuale stock value
-    1: { curveType: "function", color: '#49baff', opacity: 1}, // average line
-    //2: { curveType: "function", color: '#8677F2', opacity: 0.1}, // lower bollinger
-    2: { curveType: "function", color: '#B588D4', opacity: 1}//, // average bollinger
-   // 4: { curveType: "function", color: '#FF00D4', opacity: 0.1} // upper bollinger
-  },
+  vAxis: { viewWindowMode: "maximized" },
+  intervals: {  },
 };
+
+options.interval = {
+  'i0': { 'style':'boxes', 'fillOpacity':1 },
+  'i1': { 'style':'boxes', 'fillOpacity':1 }
+};
+
+let medianoffset = 0;
+if(chartInput.median == true) {
+  console.log(chartInput.colorMedium);
+  //options.series.n1 = { curveType: "function", color: i.colorMedium, opacity: 1}; // average line
+  options.series[1] = { curveType: "function", color: chartInput.colorMedium, opacity: 1}; // average line
+  medianoffset++;
+}
+
+if(chartInput.bol == true) {
+  options.interval.i2 = {'style':'area', 'curveType':'function', color:chartInput.colorBol, 'fillOpacity':0.3};
+  options.series[1+medianoffset] = { curveType: "function", color: chartInput.colorBol, opacity: 1}; // average bollinger
+  //2: { curveType: "function", color: '#8677F2', opacity: 0.1}, // lower bollinger
+  // 4: { curveType: "function", color: '#FF00D4', opacity: 0.1} // upper bollinger
+}
 
 export var optionsMCAS = {
   chartArea: {
@@ -72,15 +77,19 @@ export var optionsRSI = {
 
 export var cStockData = getSingleStock(cStockID,stockData); 
 export var [stockClosingData,mcasData,rsiData] = getClosingByDay(cStockData,chartInput.start,chartInput.end,chartInput.median,chartInput.medianInt,true,chartInput.bolFactor);
+let mcasHidden = (chartInput.mcas == true ? "" : "none");
+let rsiHidden = (chartInput.rsi == true ? "" : "none");
 
 export default function Graph(){
+
+  
 
     return(
        
         <div>
             <Stocks />
             <div id="chartArea">
-              <div id="mainChart">
+              <Box id="mainChart">
                 <Chart
                 chartType="LineChart"
                 width="100%"
@@ -88,8 +97,8 @@ export default function Graph(){
                 data={stockClosingData}
                 options={options}
                 />
-              </div>
-              <div id="mcasChart">
+              </Box>
+              <Box sx={{ display: mcasHidden }} >
                 <br/><br/><br/>
                 <h3>MCAS</h3><br/>
                 <Chart
@@ -99,10 +108,10 @@ export default function Graph(){
                 data={mcasData}
                 options={optionsMCAS}
                 />
-              </div>
-              <div id="mcasChart">
+              </Box>
+              <Box sx={{ display: rsiHidden }} >
                 <br/><br/><br/>
-                <h3>ROI</h3><br/>
+                <h3>RSI</h3><br/>
                 <Chart
                 chartType="Line"
                 width="100%"
@@ -110,7 +119,7 @@ export default function Graph(){
                 data={rsiData}
                 options={optionsRSI}
                 />
-              </div>
+              </Box>
             </div>
         </div>
     );

@@ -1,6 +1,7 @@
 import * as React from "react";
 import * as ReactDOM from 'react-dom/client';
 import { Chart } from "react-google-charts";
+import { Box } from '@mui/material';
 import {getStockNames,getSingleStock, getClosingByDay } from '../graphs/Functions';
 import {chartInput } from '../graphs/Graph';
 import { stockData } from '../../../stockData';
@@ -16,37 +17,32 @@ export function updateChart(i)  {
         chartArea: {
             width: '80%'
         },
+        series : {
+            0: { color: i.color } // actuale stock value
+        },
         vAxis: { viewWindowMode: "maximized" },
-        intervals: { 'color':'series-color' },
-       
+        intervals: {  },
     };
-
+    
     options.interval = {
         'i0': { 'style':'boxes', 'fillOpacity':1 },
-        'i1': { 'style':'boxes', 'fillOpacity':1 },
-    
-        'i2': { 'style':'area', 'curveType':'function', 'fillOpacity':0.3 }
-        //'b1': { 'style':'area', 'curveType':'function', 'fillOpacity':0.3 }
+        'i1': { 'style':'boxes', 'fillOpacity':1 }
     };
+    
+    let medianoffset = 0;
+    if(i.median == true) {
+        console.log(i.colorMedium);
+        //options.series.n1 = { curveType: "function", color: i.colorMedium, opacity: 1}; // average line
+        options.series[1] = { curveType: "function", color: i.colorMedium, opacity: 1}; // average line
+        medianoffset++;
+    }
 
-    options.series = {
-        0: { color: i.color }, // actuale stock value
-        1: { curveType: "function", color: '#49baff', opacity: 1}, // average line
+    if(i.bol == true) {
+        options.interval.i2 = {'style':'area', 'curveType':'function', color:i.colorBol, 'fillOpacity':0.3};
+        options.series[1+medianoffset] = { curveType: "function", color: i.colorBol, opacity: 1}; // average bollinger
         //2: { curveType: "function", color: '#8677F2', opacity: 0.1}, // lower bollinger
-        2: { curveType: "function", color: '#B588D4', opacity: 1}//, // average bollinger
         // 4: { curveType: "function", color: '#FF00D4', opacity: 0.1} // upper bollinger
-    };
-    /*
-         interval: {
-            'i0': { 'style':'boxes', 'fillOpacity':1 },
-            'i1': { 'style':'boxes', 'fillOpacity':1 },
-        
-            'i2': { 'style':'area', 'curveType':'function', 'fillOpacity':0.3 }
-            //'b1': { 'style':'area', 'curveType':'function', 'fillOpacity':0.3 }
-        },
-    
-    */
-    console.log(options);
+    }
 
     var optionsMCAS = {
         hAxis: {title: "Datum"},
@@ -68,15 +64,20 @@ export function updateChart(i)  {
           2: { color: 'blue', opacity: 1 }, // Obere Schwelle
         },
     };
-      
+    console.log(options);
 
-    const root = ReactDOM.createRoot(
+    
+    const rootUpdate = ReactDOM.createRoot(
         document.getElementById('chartArea')
     );
+    //const chartContiner = document.getElementById('chartArea');
+
     
+    let mcasHidden = (i.mcas == true ? "" : "none");
+    let rsiHidden = (i.rsi == true ? "" : "none");
     var ele = (
-        <p>
-            <div id="mainChart">
+        <Box>
+            <Box id="mainChart">
                     <Chart
                     chartType="LineChart"
                     width="100%"
@@ -84,19 +85,19 @@ export function updateChart(i)  {
                     data={stockClosingData}
                     options={options}
                     />
-            </div>
-                <div id="mcasChart">
-                    <br/><br/><br/>
-                    <h3>MCAS</h3><br/>
-                    <Chart
-                    chartType="Line"
-                    width="100%"
-                    height="300px"
-                    data={mcasData}
-                    options={optionsMCAS}
-                    />
-            </div>
-            <div id="rsiChart">
+            </Box>
+            <Box sx={{ display: mcasHidden }} >
+                <br/><br/><br/>
+                <h3>MCAS</h3><br/>
+                <Chart
+                chartType="Line"
+                width="100%"
+                height="300px"
+                data={mcasData}
+                options={optionsMCAS}
+                />
+            </Box>
+            <Box sx={{ display: rsiHidden }} >
                     <br/><br/><br/>
                     <h3>RSI</h3><br/>
                     <Chart
@@ -106,9 +107,9 @@ export function updateChart(i)  {
                     data={rsiData}
                     options={optionsRSI}
                     />
-            </div>
-        </p>
+            </Box>
+        </Box>
     );
-    root.render(ele);
+    rootUpdate.render(ele);
    
 }

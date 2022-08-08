@@ -23,7 +23,7 @@ export default function SelectionCard() {
         companyNames.push(<MenuItem value={item.isin}>{item.name}</MenuItem>)
     }
 
-    const [stockName, setStockName] = React.useState('');
+    const [stockName, setStockName] = React.useState(chartInput.id);
     const handleSelectName = (event) => {
         //console.log(event.target.value);
         setStockName(event.target.value);
@@ -52,21 +52,30 @@ export default function SelectionCard() {
     const toggleKerzenchartCheck = (event) => {
         setKerzenchartCheck(event.target.checked)
     }
-    const [gleitenderDurchschnittCheck, setGleitenderDurchschnittCheck] = React.useState(false);
+    const [gleitenderDurchschnittCheck, setGleitenderDurchschnittCheck] = React.useState(chartInput.median);
     const toggleGleitenderDurchschnitt = (event) => {
         setGleitenderDurchschnittCheck(event.target.checked)
+        console.log(event.target.checked);
+        Object.assign(chartInput, { median: event.target.checked });
+        updateChart(chartInput);
     }
-    const [macdCheck, setMacdCheck] = React.useState(false);
+    const [macdCheck, setMacdCheck] = React.useState(chartInput.macs);
     const toggleMacdCheck = (event) => {
-        setMacdCheck(event.target.checked)
+        setMacdCheck(event.target.checked);
+        Object.assign(chartInput, { mcas: event.target.checked });
+        updateChart(chartInput);
     }
-    const [rsCheck, setRsCheck] = React.useState(false);
+    const [rsCheck, setRsCheck] = React.useState(chartInput.rsi);
     const toggleRsCheck = (event) => {
-        setRsCheck(event.target.checked)
+        setRsCheck(event.target.checked);
+        Object.assign(chartInput, { rsi: event.target.checked });
+        updateChart(chartInput);
     }
-    const [bollingerCheck, setBollingerCheck] = React.useState(false);
+    const [bollingerCheck, setBollingerCheck] = React.useState(chartInput.bol);
     const toggleBollingerCheck = (event) => {
-        setBollingerCheck(event.target.checked)
+        setBollingerCheck(event.target.checked);
+        Object.assign(chartInput, { bol: event.target.checked });
+        updateChart(chartInput);
     }
 
 
@@ -79,28 +88,28 @@ export default function SelectionCard() {
         Object.assign(chartInput, { color: event.target.value });
         updateChart(chartInput);
     };
-    const [gleitenderDurchschnittColour, setGleitenderDurchschnittColour] = React.useState('');
+    const [gleitenderDurchschnittColour, setGleitenderDurchschnittColour] = React.useState(chartInput.colorMedium);
     const handleGleitenderDurchschnittColour = (event) => {
         setGleitenderDurchschnittColour(event.target.value);
-        Object.assign(chartInput, { color: event.target.value });
+        Object.assign(chartInput, { colorMedium: event.target.value });
         updateChart(chartInput);
     };
-    const [macdColour, setMacdColour] = React.useState('');
+    const [macdColour, setMacdColour] = React.useState(chartInput.mcasColor);
     const handleMacdColour = (event) => {
         setMacdColour(event.target.value);
-        Object.assign(chartInput, { color: event.target.value });
+        Object.assign(chartInput, { mcasColor: event.target.value });
         updateChart(chartInput);
     };
-    const [rsColour, setRsColour] = React.useState('');
+    const [rsColour, setRsColour] = React.useState(chartInput.rsiColor);
     const handleRsColour = (event) => {
         setRsColour(event.target.value);
-        Object.assign(chartInput, { color: event.target.value });
+        Object.assign(chartInput, { rsiColor: event.target.value });
         updateChart(chartInput);
     };
-    const [bollingerColour, setBollingerColour] = React.useState('');
+    const [bollingerColour, setBollingerColour] = React.useState(chartInput.colorBol);
     const handleBollingerColour = (event) => {
         setBollingerColour(event.target.value);
-        Object.assign(chartInput, { color: event.target.value });
+        Object.assign(chartInput, { colorBol: event.target.value });
         updateChart(chartInput);
     };
 
