@@ -13,7 +13,7 @@ export default function App() {
   return (
     <div className="App">
 
-      <h1>HAASE Chartanalyse</h1>
+      <typography sx={{font}}>HAASE Chartanalyse</typography>
 
       <SelectionCard/>
       <GraphMenu />
