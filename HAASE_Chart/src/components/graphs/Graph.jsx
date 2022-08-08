@@ -11,7 +11,7 @@ export const startDay = '2020-03-01'; // 2be replace by input data
 export const endDay = '2020-07-01';
 
 export var chartInput = {};
-Object.assign(chartInput, { id: 'DE0008404005',start:'2020-03-01',end:'2020-07-01',mcas:false,median:true,medianInt:200,bolFactor:2,color:'#ff0007',bol:true} );
+Object.assign(chartInput, { id: 'DE0008404005',start:'2020-03-01',end:'2020-07-01',mcas:false,median:true,medianInt:200,colorMedium:'#49baff',bolFactor:2,colorBol:'#B588D4',color:'#ff0007',bol:true} );
 
 
 var cStockID = chartInput.id;//'DE0008404005'; 

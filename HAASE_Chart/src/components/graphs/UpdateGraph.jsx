@@ -16,36 +16,29 @@ export function updateChart(i)  {
         chartArea: {
             width: '80%'
         },
+        series : {
+            0: { color: i.color } // actuale stock value
+        },
         vAxis: { viewWindowMode: "maximized" },
         intervals: { 'color':'series-color' },
-       
     };
-
+    
     options.interval = {
         'i0': { 'style':'boxes', 'fillOpacity':1 },
-        'i1': { 'style':'boxes', 'fillOpacity':1 },
-    
-        'i2': { 'style':'area', 'curveType':'function', 'fillOpacity':0.3 }
-        //'b1': { 'style':'area', 'curveType':'function', 'fillOpacity':0.3 }
+        'i1': { 'style':'boxes', 'fillOpacity':1 }
     };
+    
+    if(i.median == true) {
+        console.log(i.colorMedium);
+        options.series[1] = { curveType: "function", color: i.colorMedium, opacity: 1}; // average line
+    }
 
-    options.series = {
-        0: { color: i.color }, // actuale stock value
-        1: { curveType: "function", color: '#49baff', opacity: 1}, // average line
+    if(i.bol == true) {
+        options.interval.i2 = {'style':'area', 'curveType':'function', 'fillOpacity':0.3};
+        options.series[2] = { curveType: "function", color: i.colorBol, opacity: 1}; // average bollinger
         //2: { curveType: "function", color: '#8677F2', opacity: 0.1}, // lower bollinger
-        2: { curveType: "function", color: '#B588D4', opacity: 1}//, // average bollinger
         // 4: { curveType: "function", color: '#FF00D4', opacity: 0.1} // upper bollinger
-    };
-    /*
-         interval: {
-            'i0': { 'style':'boxes', 'fillOpacity':1 },
-            'i1': { 'style':'boxes', 'fillOpacity':1 },
-        
-            'i2': { 'style':'area', 'curveType':'function', 'fillOpacity':0.3 }
-            //'b1': { 'style':'area', 'curveType':'function', 'fillOpacity':0.3 }
-        },
-    
-    */
+    }
     console.log(options);
 
     var optionsMCAS = {
@@ -73,7 +66,7 @@ export function updateChart(i)  {
     const root = ReactDOM.createRoot(
         document.getElementById('chartArea')
     );
-    
+
     var ele = (
         <p>
             <div id="mainChart">
