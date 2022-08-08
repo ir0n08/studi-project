@@ -11,10 +11,10 @@ export const startDay = '2020-03-01'; // 2be replace by input data
 export const endDay = '2020-07-01';
 
 export var chartInput = {};
-Object.assign(chartInput, { id: 'DE0008404005',start:'2020-03-01',end:'2020-07-01',mcas:false,median:false,medianInt:200,bolFactor:2,color:'#ff0007'} );
+Object.assign(chartInput, { id: 'DE0008404005',start:'2020-03-01',end:'2020-07-01',mcas:false,median:true,medianInt:200,bolFactor:2,color:'#ff0007',bol:true} );
 
 
-var cStockID = chartInput.id;//'DE0008404005'; //React.useState.stockName; //test
+var cStockID = chartInput.id;//'DE0008404005'; 
 let medianOn = chartInput.median;
 
 
@@ -48,14 +48,30 @@ export var options = {
 };
 
 export var optionsMCAS = {
+  chartArea: {
+    width: '80%'
+  },
+  legend: 'bottom',
   series: {
     0: { curveType: "function", color: 'blue', opacity: 1 }, // MCAS
     1: { curveType: "function", color: 'red', opacity: 1}, // SIGNAL
   },
 };
 
+export var optionsRSI = {
+  chartArea: {
+    width: '80%'
+  },
+  legend: 'bottom',
+  series: {
+    0: { color: 'blue', opacity: 1 }, // Untere Schwelle
+    1: { curveType: "function", color: 'orange', opacity: 1}, // ROI
+    2: { color: 'blue', opacity: 1 }, // Obere Schwelle
+  },
+};
+
 export var cStockData = getSingleStock(cStockID,stockData); 
-export var [stockClosingData,mcasData,rsiData] = getClosingByDay(cStockData,chartInput.start,chartInput.end,false,chartInput.medianInt,true,chartInput.bolFactor);
+export var [stockClosingData,mcasData,rsiData] = getClosingByDay(cStockData,chartInput.start,chartInput.end,chartInput.median,chartInput.medianInt,true,chartInput.bolFactor);
 
 export default function Graph(){
 
@@ -82,6 +98,17 @@ export default function Graph(){
                 height="300px"
                 data={mcasData}
                 options={optionsMCAS}
+                />
+              </div>
+              <div id="mcasChart">
+                <br/><br/><br/>
+                <h3>ROI</h3><br/>
+                <Chart
+                chartType="Line"
+                width="100%"
+                height="300px"
+                data={rsiData}
+                options={optionsRSI}
                 />
               </div>
             </div>
