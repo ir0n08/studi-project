@@ -158,10 +158,10 @@ export default function SelectionCard() {
                                 <FormControl sx={{ minWidth: 285 }} size="small">
                                     <InputLabel id={"select-company"}>Aktie</InputLabel>
                                     <Select
-                                        lableid="select-company"
+                                        labelid="select-company"
                                         id="select-company"
                                         value={stockName}
-                                        lable="company"
+                                        label="Aktie"
                                         onChange={handleSelectName}
                                     >
                                         {companyNames}
@@ -169,13 +169,13 @@ export default function SelectionCard() {
                                 </FormControl>
                             </Box>
                             <Box>
-                                <FormControl sx={{ minWidth: 285 }} size="small">
-                                    <InputLabel id={"select-company"}>Einfärbung Aktienkurs</InputLabel>
+                                <FormControl sx={{ minWidth: 285}} size="small">
+                                    <InputLabel id={"select-company"} >Einfärbung Aktienkurs</InputLabel>
                                     <Select
-                                        lableid="select-kurs-colour"
+                                        labelid="select-kurs-colour"
                                         id="select-kurs-colour"
                                         value={kursColour}
-                                        lable="company"
+                                        label="Einfärbung Aktienkurs"
                                         onChange={handleKursColour}
                                     >
                                         <MenuItem value={'#55EAB1'}>Türkis</MenuItem>
@@ -194,7 +194,7 @@ export default function SelectionCard() {
                     </Box>
 
                 </Box>
-                <Box sx={{ margin: "10px", display: "flex", flexDirection: "column", gap: "10px" }}>
+                <Box sx={{ margin: "10px", display: "flex", flexDirection: "column", gap: "10px", border: "1px solid #BBBBBB", padding:"10px", borderRadius: "7px"}}>
                     <Box sx={{ display: "flex", flexDirection: "row", alignItems: "center", gap: "20px", width: "500px", justifyContent: "space-between" }}>
                         <FormControlLabel sx={{ width: 25 }} control={<Checkbox sx={{ marginRight: "0" }} checked={kerzenchartCheck} onChange={toggleKerzenchartCheck} />} />
                         <Typography sx={{ width: 300 }} variant='h6'>
@@ -206,10 +206,10 @@ export default function SelectionCard() {
                         <FormControl sx={{ width: 150 }} size="small">
                             <InputLabel id="select-kerzenchart-colour">Einfärbung</InputLabel>
                             <Select
-                                lableid="select-kerzenchart-colour"
+                                labelid="select-kerzenchart-colour"
                                 id="select-kerzenchart-colour"
                                 value={kerzenchartColour}
-                                lable="kerzenchartColour"
+                                label="Einfärbung"
                                 onChange={handleKerzenchartColour}
                             >
                                 <MenuItem value={'#55EAB1'}>Türkis</MenuItem>
@@ -236,10 +236,10 @@ export default function SelectionCard() {
                         <FormControl sx={{ width: 150 }} size="small">
                             <InputLabel id="select-gleitenderDurchschnitt-colour">Einfärbung</InputLabel>
                             <Select
-                                lableid="select-gleitenderDurchschnitt-colour"
+                                labelid="select-gleitenderDurchschnitt-colour"
                                 id="select-gleitenderDurchschnitt-colour"
                                 value={gleitenderDurchschnittColour}
-                                lable="gleitenderDurchschnittColour"
+                                label="Einfärbung"
                                 onChange={handleGleitenderDurchschnittColour}
                             >
                                 <MenuItem value={'#55EAB1'}>Türkis</MenuItem>
@@ -256,10 +256,10 @@ export default function SelectionCard() {
                         <FormControl sx={{ width: 150 }} size="small">
                             <InputLabel id="select-gleitenderDurchschnitt-tage">Anzahl Tage</InputLabel>
                             <Select
-                                lableid="select-gleitenderDurchschnitt-tage"
+                                labelid="select-gleitenderDurchschnitt-tage"
                                 id="select-gleitenderDurchschnitt-tage"
                                 value={gleitenderDurchschnittTage}
-                                lable="gleitenderDurchschnittTage"
+                                label="Anzahl Tage"
                                 onChange={handleGleitenderDurchschnittTage}
                             >
                                 <MenuItem value={30}>30</MenuItem>
@@ -271,7 +271,57 @@ export default function SelectionCard() {
                         </FormControl>
                         
                     </Box>
-                
+                    <Box sx={{ display: "flex", flexDirection: "row", alignItems: "center", gap: "20px", width: "650px", justifyContent: "space-between" }}>
+                        <FormControlLabel sx={{ width: 25 }} control={<Checkbox checked={bollingerCheck} onChange={toggleBollingerCheck} />} />
+                        <Typography sx={{ width: 300 }} variant='h6'>
+                            Bollinger-Bänder
+                        </Typography>
+                        <Tooltip sx={{ width: 25 }} title={<div>Entwickelt um Kurstrends zu erkennen. Von ihnen ausgehend kann man 4 Rückschlüsse ziehen: <br/><br/>
+                        1. Sobald sich die Bänder dem zugrunde liegenden 20-Tage-Durchschnitt annähern, steht eine massive Kursbewegung bevor. <br/>
+                        2. Kurse tendieren dazu, von einem Band zum anderen zu laufen. Notiert ein Kurs in der Nähe des einen Bandes, 
+                        so ist kurzfristig eine gegensätzliche Tendenz in Richtung auf das andere Band zu erwarten. <br/>
+                        3. Bildet sich innerhalb eines Bollinger-Bandes ein Boden oder ein Topp heraus, und wird dieses auch innerhalb des Bandes wiederholt, 
+                        so ist eine Trendwende zu erwarten. <br/>
+                        4. Bricht ein Kurs aus dem Bollinger-Band aus, so ist eine weitere Bewegung in Ausbruchsrichtung zu erwarten.</div>}>
+                        <InfoIcon></InfoIcon>
+                        </Tooltip>
+                        <FormControl sx={{ width: 150 }} size="small">
+                            <InputLabel id="select-bollinger-colour">Einfärbung</InputLabel>
+                            <Select
+                                labelid="select-bollinger-colour"
+                                id="select-bollinger-colour"
+                                value={bollingerColour}
+                                label="Einfärbung"
+                                onChange={handleBollingerColour}
+                            >
+                                <MenuItem value={'#55EAB1'}>Türkis</MenuItem>
+                                <MenuItem value={'#3028EB'}>Blau</MenuItem>
+                                <MenuItem value={'#60EB00'}>Hellgrün</MenuItem>
+                                <MenuItem value={'#EB3C17'}>Rot</MenuItem>
+                                <MenuItem value={'#FFEB02'}>Gelb</MenuItem>
+                                <MenuItem value={'#EBC50C'}>Orange</MenuItem>
+                                <MenuItem value={'#4B006B'}>Lila</MenuItem>
+                                <MenuItem value={'#051700'}>Schwarz</MenuItem>
+                                <MenuItem value={'#858585'}>Grau</MenuItem>
+                            </Select>
+                        </FormControl>
+                        <FormControl sx={{ width: 150 }} size="small">
+                            <InputLabel id="select-bollinger-abweichung">Abweichung</InputLabel>
+                            <Select
+                                labelid="select-bollinger-abweichung"
+                                id="select-bollinger-abweichung"
+                                value={bollingerAbweichung}
+                                label="Abweichung"
+                                onChange={handleBollingerAbweichung}
+                            >
+                                <MenuItem value={'67%'}>67%</MenuItem>
+                                <MenuItem value={'80%'}>80%</MenuItem>
+                                <MenuItem value={'90%'}>90%</MenuItem>
+                                <MenuItem value={'95%'}>95%</MenuItem>
+                                <MenuItem value={'99%'}>99%</MenuItem>
+                            </Select>
+                        </FormControl>
+                    </Box>
 
                     <Box sx={{ display: "flex", flexDirection: "row", alignItems: "center", gap: "20px", width: "500px", justifyContent: "space-between" }}>
                         <FormControlLabel sx={{ width: 25 }} control={<Checkbox checked={macdCheck} onChange={toggleMacdCheck} />} />
@@ -284,10 +334,10 @@ export default function SelectionCard() {
                         <FormControl sx={{ width: 150 }} size="small">
                             <InputLabel id="select-MACD-colour">Einfärbung</InputLabel>
                             <Select
-                                lableid="select-MACD-colour"
+                                labelid="select-MACD-colour"
                                 id="select-MACD-colour"
                                 value={macdColour}
-                                lable="macdColour"
+                                label="Einfärbung"
                                 onChange={handleMacdColour}
                             >
                                 <MenuItem value={'#55EAB1'}>Türkis</MenuItem>
@@ -319,10 +369,10 @@ export default function SelectionCard() {
                         <FormControl sx={{ width: 150 }} size="small">
                             <InputLabel id="select-rs-colour">Einfärbung</InputLabel>
                             <Select
-                                lableid="select-rs-colour"
+                                labelid="select-rs-colour"
                                 id="select-rs-colour"
                                 value={rsColour}
-                                lable="rsColour"
+                                label="Einfärbung"
                                 onChange={handleRsColour}
                             >
                                 <MenuItem value={'#55EAB1'}>Türkis</MenuItem>
@@ -338,57 +388,7 @@ export default function SelectionCard() {
                         </FormControl>
                     </Box>
 
-                    <Box sx={{ display: "flex", flexDirection: "row", alignItems: "center", gap: "20px", width: "650px", justifyContent: "space-between" }}>
-                        <FormControlLabel sx={{ width: 25 }} control={<Checkbox checked={bollingerCheck} onChange={toggleBollingerCheck} />} />
-                        <Typography sx={{ width: 300 }} variant='h6'>
-                            Bollinger-Bänder
-                        </Typography>
-                        <Tooltip sx={{ width: 25 }} title={<div>Entwickelt um Kurstrends zu erkennen. Von ihnen ausgehend kann man 4 Rückschlüsse ziehen: <br/><br/>
-                        1. Sobald sich die Bänder dem zugrunde liegenden 20-Tage-Durchschnitt annähern, steht eine massive Kursbewegung bevor. <br/>
-                        2. Kurse tendieren dazu, von einem Band zum anderen zu laufen. Notiert ein Kurs in der Nähe des einen Bandes, 
-                        so ist kurzfristig eine gegensätzliche Tendenz in Richtung auf das andere Band zu erwarten. <br/>
-                        3. Bildet sich innerhalb eines Bollinger-Bandes ein Boden oder ein Topp heraus, und wird dieses auch innerhalb des Bandes wiederholt, 
-                        so ist eine Trendwende zu erwarten. <br/>
-                        4. Bricht ein Kurs aus dem Bollinger-Band aus, so ist eine weitere Bewegung in Ausbruchsrichtung zu erwarten.</div>}>
-                        <InfoIcon></InfoIcon>
-                        </Tooltip>
-                        <FormControl sx={{ width: 150 }} size="small">
-                            <InputLabel id="select-bollinger-colour">Einfärbung</InputLabel>
-                            <Select
-                                lableid="select-bollinger-colour"
-                                id="select-bollinger-colour"
-                                value={bollingerColour}
-                                lable="bollingerColour"
-                                onChange={handleBollingerColour}
-                            >
-                                <MenuItem value={'#55EAB1'}>Türkis</MenuItem>
-                                <MenuItem value={'#3028EB'}>Blau</MenuItem>
-                                <MenuItem value={'#60EB00'}>Hellgrün</MenuItem>
-                                <MenuItem value={'#EB3C17'}>Rot</MenuItem>
-                                <MenuItem value={'#FFEB02'}>Gelb</MenuItem>
-                                <MenuItem value={'#EBC50C'}>Orange</MenuItem>
-                                <MenuItem value={'#4B006B'}>Lila</MenuItem>
-                                <MenuItem value={'#051700'}>Schwarz</MenuItem>
-                                <MenuItem value={'#858585'}>Grau</MenuItem>
-                            </Select>
-                        </FormControl>
-                        <FormControl sx={{ width: 150 }} size="small">
-                            <InputLabel id="select-bollinger-abweichung">Abweichung</InputLabel>
-                            <Select
-                                lableid="select-bollinger-abweichung"
-                                id="select-bollinger-abweichung"
-                                value={bollingerAbweichung}
-                                lable="bollingerAbweichung"
-                                onChange={handleBollingerAbweichung}
-                            >
-                                <MenuItem value={'67%'}>67%</MenuItem>
-                                <MenuItem value={'80%'}>80%</MenuItem>
-                                <MenuItem value={'90%'}>90%</MenuItem>
-                                <MenuItem value={'95%'}>95%</MenuItem>
-                                <MenuItem value={'99%'}>99%</MenuItem>
-                            </Select>
-                        </FormControl>
-                    </Box>
+                    
                 </Box>
             </Box>
 
