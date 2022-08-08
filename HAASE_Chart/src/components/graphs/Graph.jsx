@@ -12,7 +12,7 @@ export const startDay = '2020-03-01'; // 2be replace by input data
 export const endDay = '2020-07-01';
 
 export var chartInput = {};
-Object.assign(chartInput, { id: 'DE0008404005',start:'2020-03-01',end:'2020-07-01',mcas:false,rsi:false,median:true,medianInt:200,colorMedium:'#3028EB',bolFactor:2,colorBol:'#FFEB02',color:'#051700',bol:true,rsiColor:'#60EB00',mcasColor:'#55EAB1'} );
+Object.assign(chartInput, { id: 'DE0008404005',start:'2020-03-01',end:'2020-07-01',candle:true,mcas:false,rsi:false,median:false,medianInt:200,colorMedium:'#3028EB',bolFactor:2,colorBol:'#FFEB02',color:'#051700',bol:false,rsiColor:'#60EB00',mcasColor:'#55EAB1'} );
 
 
 var cStockID = chartInput.id; 
@@ -30,6 +30,7 @@ export var options = {
   },
   vAxis: { viewWindowMode: "maximized" },
   intervals: {  },
+  candlestick: {  }
 };
 
 options.interval = {
@@ -39,8 +40,6 @@ options.interval = {
 
 let medianoffset = 0;
 if(chartInput.median == true) {
-  console.log(chartInput.colorMedium);
-  //options.series.n1 = { curveType: "function", color: i.colorMedium, opacity: 1}; // average line
   options.series[1] = { curveType: "function", color: chartInput.colorMedium, opacity: 1}; // average line
   medianoffset++;
 }
@@ -48,8 +47,16 @@ if(chartInput.median == true) {
 if(chartInput.bol == true) {
   options.interval.i2 = {'style':'area', 'curveType':'function', color:chartInput.colorBol, 'fillOpacity':0.3};
   options.series[1+medianoffset] = { curveType: "function", color: chartInput.colorBol, opacity: 1}; // average bollinger
+  medianoffset++;
   //2: { curveType: "function", color: '#8677F2', opacity: 0.1}, // lower bollinger
   // 4: { curveType: "function", color: '#FF00D4', opacity: 0.1} // upper bollinger
+}
+
+if(chartInput.candle == true) {
+  options.series[1+medianoffset] = { type: "candlesticks", opacity: 0.2, legend: 'none' };
+
+  options.candlestick.fallingColor = { strokeWidth: 0, fill: '#a52714'  };
+  options.candlestick.risingColor = {strokeWidth: 0, fill: '#0f9d58'};
 }
 
 export var optionsMCAS = {
@@ -58,7 +65,7 @@ export var optionsMCAS = {
   },
   legend: 'bottom',
   series: {
-    0: { curveType: "function", color: 'blue', opacity: 1 }, // MCAS
+    0: { curveType: "function", color: chartInput.mcasColor, opacity: 1 }, // MCAS
     1: { curveType: "function", color: 'red', opacity: 1}, // SIGNAL
   },
 };
@@ -76,9 +83,14 @@ export var optionsRSI = {
 };
 
 export var cStockData = getSingleStock(cStockID,stockData); 
-export var [stockClosingData,mcasData,rsiData] = getClosingByDay(cStockData,chartInput.start,chartInput.end,chartInput.median,chartInput.medianInt,true,chartInput.bolFactor);
+export var [stockClosingData,mcasData,rsiData] = getClosingByDay(cStockData,chartInput.start,chartInput.end,chartInput.median,chartInput.medianInt,chartInput.bol,chartInput.bolFactor,chartInput.candle);
 let mcasHidden = (chartInput.mcas == true ? "" : "none");
 let rsiHidden = (chartInput.rsi == true ? "" : "none");
+
+/* DEV AREA */
+
+
+/* END DEV AREA */
 
 export default function Graph(){
 

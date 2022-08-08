@@ -22,6 +22,7 @@ export function updateChart(i)  {
         },
         vAxis: { viewWindowMode: "maximized" },
         intervals: {  },
+        candlestick: {  }
     };
     
     options.interval = {
@@ -40,15 +41,24 @@ export function updateChart(i)  {
     if(i.bol == true) {
         options.interval.i2 = {'style':'area', 'curveType':'function', color:i.colorBol, 'fillOpacity':0.3};
         options.series[1+medianoffset] = { curveType: "function", color: i.colorBol, opacity: 1}; // average bollinger
-        //2: { curveType: "function", color: '#8677F2', opacity: 0.1}, // lower bollinger
-        // 4: { curveType: "function", color: '#FF00D4', opacity: 0.1} // upper bollinger
+        medianoffset++;
     }
+
+    if(i.candle == true) {
+        options.series[1+medianoffset] = { type: "candlesticks", color:'orange', dataOpacity: 0.6, legend: 'none',strokeWidth: 0 };
+      
+        options.candlestick.fallingColor = { strokeWidth: 0, fill: '#a52714',fillOpacity:0.8  };
+        options.candlestick.risingColor = {strokeWidth: 0, fill: '#0f9d58',fillOpacity:0.8};
+        options.backgroundColor = {stroke: 'organge'};
+
+      }
+      
 
     var optionsMCAS = {
         hAxis: {title: "Datum"},
         vAxis: {title: "Signalhöhe"},
         series: {
-          0: { curveType: "function", color: 'blue', opacity: 1 }, // MCAS
+          0: { curveType: "function", color: i.mcasColor, opacity: 1 }, // MCAS
           1: { curveType: "function", color: 'red', opacity: 1}, // SIGNAL
         },
     };

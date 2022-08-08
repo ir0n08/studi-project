@@ -40,7 +40,7 @@ export default function SelectionCard() {
     };
 
     //UseStates für Checkboxes
-    const [kerzenchartCheck, setKerzenchartCheck] = React.useState(false);
+    const [kerzenchartCheck, setKerzenchartCheck] = React.useState(chartInput.candle);
     const toggleKerzenchartCheck = (event) => {
         setKerzenchartCheck(event.target.checked)
     }
