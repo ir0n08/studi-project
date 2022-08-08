@@ -19,10 +19,6 @@ export default function App() {
       <GraphMenu />
       <Graph />
 
-      <h4>Beachten Sie, dass die Börsen Samstag und Sonntag geschlossen sind und somit für diese Tage keine Werte existieren. </h4>
-      <h4>Beginn der Werte-Erhebung: 2000-01-03.</h4>
-      <h4>Derzeitiges Ende der Werte-Erhebung: 2022-06-17.</h4>
-
     </div>
   )
 }

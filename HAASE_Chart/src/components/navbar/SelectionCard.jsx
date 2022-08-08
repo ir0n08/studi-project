@@ -10,9 +10,9 @@ import { stockData } from '../../../stockData';
 import { Checkbox } from '@mui/material';
 import FormGroup from '@mui/material/FormGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
-import Container from 'react-bootstrap/Container';
-import Row from 'react-bootstrap/Row';
-import Col from 'react-bootstrap/Col';
+import InfoIcon from '@mui/icons-material/Info';
+import Tooltip from '@mui/material/Tooltip';
+
 
 
 
@@ -110,6 +110,19 @@ export default function SelectionCard() {
         updateChart(chartInput);
     };
 
+    //UseStates für Anzahl Tage Gl.D. und Standardabweichung Bollinger
+    const [gleitenderDurchschnittTage, setGleitenderDurchschnittTage] = React.useState(200);   //ToDo Anpassen durch Paul
+    const handleGleitenderDurchschnittTage = (event) => {
+        setGleitenderDurchschnittTage(event.target.value);
+        Object.assign(chartInput, { color: event.target.value });
+        updateChart(chartInput);
+    };
+    const [bollingerAbweichung, setBollingerAbweichung] = React.useState('95%');       //ToDo Anpassen durch Paul
+    const handleBollingerAbweichung = (event) => {
+        setBollingerAbweichung(event.target.value);
+        Object.assign(chartInput, { color: event.target.value });
+        updateChart(chartInput);
+    };
 
 
 
@@ -183,11 +196,14 @@ export default function SelectionCard() {
                 </Box>
                 <Box sx={{ margin: "10px", display: "flex", flexDirection: "column", gap: "10px" }}>
                     <Box sx={{ display: "flex", flexDirection: "row", alignItems: "center", gap: "20px", width: "500px", justifyContent: "space-between" }}>
-                        <FormControlLabel control={<Checkbox sx={{ marginRight: "0" }} checked={kerzenchartCheck} onChange={toggleKerzenchartCheck} />} />
-                        <Typography variant='h6'>
+                        <FormControlLabel sx={{ width: 25 }} control={<Checkbox sx={{ marginRight: "0" }} checked={kerzenchartCheck} onChange={toggleKerzenchartCheck} />} />
+                        <Typography sx={{ width: 300 }} variant='h6'>
                             Kerzenchart
                         </Typography>
-                        <FormControl sx={{ minWidth: 120 }} size="small">
+                        <Tooltip sx={{ width: 25 }} title="Was ist das für ein Graph">
+                        <InfoIcon></InfoIcon>
+                        </Tooltip>
+                        <FormControl sx={{ width: 150 }} size="small">
                             <InputLabel id="select-kerzenchart-colour">Einfärbung</InputLabel>
                             <Select
                                 lableid="select-kerzenchart-colour"
@@ -209,12 +225,15 @@ export default function SelectionCard() {
                         </FormControl>
                     </Box>
 
-                    <Box sx={{ display: "flex", flexDirection: "row", alignItems: "center", gap: "20px", width: "500px", justifyContent: "space-between" }}>
-                        <FormControlLabel control={<Checkbox checked={gleitenderDurchschnittCheck} onChange={toggleGleitenderDurchschnitt} />} />
-                        <Typography variant='h6'>
+                    <Box sx={{ display: "flex", flexDirection: "row", alignItems: "center", gap: "20px", width: "650px", justifyContent: "space-between" }}>
+                        <FormControlLabel sx={{ width: 25 }} control={<Checkbox checked={gleitenderDurchschnittCheck} onChange={toggleGleitenderDurchschnitt} />} />
+                        <Typography sx={{ width: 300 }} variant='h6'>
                             Gleitender Durchschnitt
                         </Typography>
-                        <FormControl sx={{ minWidth: 120 }} size="small">
+                        <Tooltip sx={{ width: 25 }} title="Durchschnitt des Aktienkurses der letzten 30, 60, 90, 120 oder 200 Tage">
+                        <InfoIcon></InfoIcon>
+                        </Tooltip>
+                        <FormControl sx={{ width: 150 }} size="small">
                             <InputLabel id="select-gleitenderDurchschnitt-colour">Einfärbung</InputLabel>
                             <Select
                                 lableid="select-gleitenderDurchschnitt-colour"
@@ -234,14 +253,35 @@ export default function SelectionCard() {
                                 <MenuItem value={'#858585'}>Grau</MenuItem>
                             </Select>
                         </FormControl>
+                        <FormControl sx={{ width: 150 }} size="small">
+                            <InputLabel id="select-gleitenderDurchschnitt-tage">Anzahl Tage</InputLabel>
+                            <Select
+                                lableid="select-gleitenderDurchschnitt-tage"
+                                id="select-gleitenderDurchschnitt-tage"
+                                value={gleitenderDurchschnittTage}
+                                lable="gleitenderDurchschnittTage"
+                                onChange={handleGleitenderDurchschnittTage}
+                            >
+                                <MenuItem value={30}>30</MenuItem>
+                                <MenuItem value={60}>60</MenuItem>
+                                <MenuItem value={90}>90</MenuItem>
+                                <MenuItem value={120}>120</MenuItem>
+                                <MenuItem value={200}>200</MenuItem>
+                            </Select>
+                        </FormControl>
+                        
                     </Box>
+                
 
                     <Box sx={{ display: "flex", flexDirection: "row", alignItems: "center", gap: "20px", width: "500px", justifyContent: "space-between" }}>
-                        <FormControlLabel control={<Checkbox checked={macdCheck} onChange={toggleMacdCheck} />} />
-                        <Typography variant='h6'>
+                        <FormControlLabel sx={{ width: 25 }} control={<Checkbox checked={macdCheck} onChange={toggleMacdCheck} />} />
+                        <Typography sx={{ width: 300 }} variant='h6'>
                             MACD-Indikator
                         </Typography>
-                        <FormControl sx={{ minWidth: 120 }} size="small">
+                        <Tooltip sx={{ width: 25 }} title="Ein steigender MACD zeigt einen Aufwärtstrend, ein fallender MACD einen Abwärtstrend an.">
+                        <InfoIcon></InfoIcon>
+                        </Tooltip>
+                        <FormControl sx={{ width: 150 }} size="small">
                             <InputLabel id="select-MACD-colour">Einfärbung</InputLabel>
                             <Select
                                 lableid="select-MACD-colour"
@@ -264,11 +304,19 @@ export default function SelectionCard() {
                     </Box>
 
                     <Box sx={{ display: "flex", flexDirection: "row", alignItems: "center", gap: "20px", width: "500px", justifyContent: "space-between" }}>
-                        <FormControlLabel control={<Checkbox checked={rsCheck} onChange={toggleRsCheck} />} />
-                        <Typography variant='h6'>
+                        <FormControlLabel sx={{ width: 25 }} control={<Checkbox checked={rsCheck} onChange={toggleRsCheck} />} />
+                        <Typography sx={{ width: 300 }} variant='h6'>
                             RS-Indikator
                         </Typography>
-                        <FormControl sx={{ minWidth: 120 }} size="small">
+                        <Tooltip sx={{ width: 25 }} 
+                        title={<div>RSI steht für relative Stärke Index. Er ist ein wichtiges Instrument in der technischen Analyse, da er die Dynamik eines Assets 
+                            bestimmt und beurteilt, ob sich dieses in einem überkauften oder überverkauften Bereich befindet. <br/><br/>
+                            Das Ergebnis ist ein Wert zwischen 0-100. Die meisten Analysten glauben, dass ein Asset bei einem Level von 70 überkauft ist 
+                            und damit zu einer Korrektur neigen könnte, während ein Asset mit einem Niveau von 30 überverkauft 
+                            ist und womöglich bereit für eine Rally ist.</div>}>
+                        <InfoIcon></InfoIcon>
+                        </Tooltip>
+                        <FormControl sx={{ width: 150 }} size="small">
                             <InputLabel id="select-rs-colour">Einfärbung</InputLabel>
                             <Select
                                 lableid="select-rs-colour"
@@ -290,12 +338,21 @@ export default function SelectionCard() {
                         </FormControl>
                     </Box>
 
-                    <Box sx={{ display: "flex", flexDirection: "row", alignItems: "center", gap: "20px", width: "500px", justifyContent: "space-between" }}>
-                        <FormControlLabel control={<Checkbox checked={bollingerCheck} onChange={toggleBollingerCheck} />} />
-                        <Typography variant='h6'>
+                    <Box sx={{ display: "flex", flexDirection: "row", alignItems: "center", gap: "20px", width: "650px", justifyContent: "space-between" }}>
+                        <FormControlLabel sx={{ width: 25 }} control={<Checkbox checked={bollingerCheck} onChange={toggleBollingerCheck} />} />
+                        <Typography sx={{ width: 300 }} variant='h6'>
                             Bollinger-Bänder
                         </Typography>
-                        <FormControl sx={{ minWidth: 120 }} size="small">
+                        <Tooltip sx={{ width: 25 }} title={<div>Entwickelt um Kurstrends zu erkennen. Von ihnen ausgehend kann man 4 Rückschlüsse ziehen: <br/><br/>
+                        1. Sobald sich die Bänder dem zugrunde liegenden 20-Tage-Durchschnitt annähern, steht eine massive Kursbewegung bevor. <br/>
+                        2. Kurse tendieren dazu, von einem Band zum anderen zu laufen. Notiert ein Kurs in der Nähe des einen Bandes, 
+                        so ist kurzfristig eine gegensätzliche Tendenz in Richtung auf das andere Band zu erwarten. <br/>
+                        3. Bildet sich innerhalb eines Bollinger-Bandes ein Boden oder ein Topp heraus, und wird dieses auch innerhalb des Bandes wiederholt, 
+                        so ist eine Trendwende zu erwarten. <br/>
+                        4. Bricht ein Kurs aus dem Bollinger-Band aus, so ist eine weitere Bewegung in Ausbruchsrichtung zu erwarten.</div>}>
+                        <InfoIcon></InfoIcon>
+                        </Tooltip>
+                        <FormControl sx={{ width: 150 }} size="small">
                             <InputLabel id="select-bollinger-colour">Einfärbung</InputLabel>
                             <Select
                                 lableid="select-bollinger-colour"
@@ -315,16 +372,28 @@ export default function SelectionCard() {
                                 <MenuItem value={'#858585'}>Grau</MenuItem>
                             </Select>
                         </FormControl>
+                        <FormControl sx={{ width: 150 }} size="small">
+                            <InputLabel id="select-bollinger-abweichung">Abweichung</InputLabel>
+                            <Select
+                                lableid="select-bollinger-abweichung"
+                                id="select-bollinger-abweichung"
+                                value={bollingerAbweichung}
+                                lable="bollingerAbweichung"
+                                onChange={handleBollingerAbweichung}
+                            >
+                                <MenuItem value={'67%'}>67%</MenuItem>
+                                <MenuItem value={'80%'}>80%</MenuItem>
+                                <MenuItem value={'90%'}>90%</MenuItem>
+                                <MenuItem value={'95%'}>95%</MenuItem>
+                                <MenuItem value={'99%'}>99%</MenuItem>
+                            </Select>
+                        </FormControl>
                     </Box>
                 </Box>
             </Box>
 
         </Box>
     )
-
-
-
-
 }
 
 
@@ -340,26 +409,3 @@ function setStockNameGlobal(name) {
 
     updateChart(name,'2020-03-01','2020-07-01');
 }*/
-
-
-
-
-
-/*
-    <FormControl sx={{  minWidth: 285 }} size="small">
-                        <InputLabel id="select-graphtype">Graph</InputLabel>
-                        <Select
-                            lableid = "select-graphtype"
-                            id = "select-graphtype"
-                            value={stockGraph}
-                            lable="graphtype"
-                            onChange={handleSelectGraph}
-                        >
-                            <MenuItem value={0}>Kerzenchart</MenuItem>
-                            <MenuItem value={1}>Gleitender Durchschnitt</MenuItem>
-                            <MenuItem value={2}>MACD-Indikator</MenuItem>
-                            <MenuItem value={3}>RS-Indikator</MenuItem>
-                            <MenuItem value={4}>Bollinger-Bänder</MenuItem>   
-                        </Select>
-                    </FormControl>
-*/
