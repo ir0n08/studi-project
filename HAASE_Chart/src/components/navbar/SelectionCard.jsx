@@ -22,17 +22,17 @@ export default function SelectionCard() {
         companyNames.push(<MenuItem value={item.isin}>{item.name}</MenuItem>)
     }
 
+    // select stock and update graph
     const [stockName, setStockName] = React.useState(chartInput.id);
     const handleSelectName = (event) => {
-        //console.log(event.target.value);
         setStockName(event.target.value);
         Object.assign(chartInput, { id: event.target.value });
         updateChart(chartInput);
     };
 
 
-    //Der kommt noch weg, genauso der Input direkt unter Company, jede Grafi kkriegt eigenen Handler
-    const [stockColour, setStockColour] = React.useState('#EBC50C');
+    // Set Stock color and update graph
+    const [stockColour, setStockColour] = React.useState(chartInput.color);
     const handleStockColour = (event) => {
         setStockColour(event.target.value);
         Object.assign(chartInput, { color: event.target.value });
@@ -43,6 +43,9 @@ export default function SelectionCard() {
     const [kerzenchartCheck, setKerzenchartCheck] = React.useState(chartInput.candle);
     const toggleKerzenchartCheck = (event) => {
         setKerzenchartCheck(event.target.checked)
+        Object.assign(chartInput, { candle: event.target.checked });
+        console.log(event.target.checked);
+        updateChart(chartInput);
     }
     const [gleitenderDurchschnittCheck, setGleitenderDurchschnittCheck] = React.useState(chartInput.median);
     const toggleGleitenderDurchschnitt = (event) => {
@@ -74,12 +77,15 @@ export default function SelectionCard() {
 
 
     //UseStates für Farbauswahl der verschiedenen Graphen
+    /* Kerzencharts färben macht keinen Sinn, damit raus*/
     const [kerzenchartColour, setKerzenchartColour] = React.useState('');
     const handleKerzenchartColour = (event) => {
-        setKerzenchartColour(event.target.value);
+       /* setKerzenchartColour(event.target.value);
         Object.assign(chartInput, { color: event.target.value });
         updateChart(chartInput);
+        */
     };
+    
     const [gleitenderDurchschnittColour, setGleitenderDurchschnittColour] = React.useState(chartInput.colorMedium);
     const handleGleitenderDurchschnittColour = (event) => {
         setGleitenderDurchschnittColour(event.target.value);
@@ -200,7 +206,7 @@ export default function SelectionCard() {
                         <Tooltip sx={{ width: 25 }} title="Was ist das für ein Graph">
                         <InfoIcon></InfoIcon>
                         </Tooltip>
-                        <FormControl sx={{ width: 150 }} size="small">
+                        <FormControl sx={{ width: 150, display:'block',visibility: 'hidden' }} size="small">
                             <InputLabel id="select-kerzenchart-colour">Einfärbung</InputLabel>
                             <Select
                                 lableid="select-kerzenchart-colour"
@@ -220,6 +226,7 @@ export default function SelectionCard() {
                                 <MenuItem value={'#858585'}>Grau</MenuItem>
                             </Select>
                         </FormControl>
+                        
                     </Box>
 
                     <Box sx={{ display: "flex", flexDirection: "row", alignItems: "center", gap: "20px", width: "650px", justifyContent: "space-between" }}>

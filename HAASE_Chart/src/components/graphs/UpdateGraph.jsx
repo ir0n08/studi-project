@@ -10,7 +10,7 @@ import { stockData } from '../../../stockData';
 export function updateChart(i)  {
 
     var cStockData = getSingleStock(i.id,stockData); //startDate,endDate,median=false,medianDays=200,bol=false,bolFactor=2
-    let [stockClosingData,mcasData,rsiData] = getClosingByDay(cStockData,i.start,i.end,i.median,i.medianInt,i.bol,i.bolFactor);
+    let [stockClosingData,mcasData,rsiData] = getClosingByDay(cStockData,i.start,i.end,i.median,i.medianInt,i.bol,i.bolFactor,i.candle);
     
     var options = {
         legend: 'bottom',
@@ -49,8 +49,6 @@ export function updateChart(i)  {
       
         options.candlestick.fallingColor = { strokeWidth: 0, fill: '#a52714',fillOpacity:0.8  };
         options.candlestick.risingColor = {strokeWidth: 0, fill: '#0f9d58',fillOpacity:0.8};
-        options.backgroundColor = {stroke: 'organge'};
-
       }
       
 
@@ -70,7 +68,7 @@ export function updateChart(i)  {
         legend: 'bottom',
         series: {
           0: { color: 'blue', opacity: 1 }, // Untere Schwelle
-          1: { curveType: "function", color: 'orange', opacity: 1}, // ROI
+          1: { curveType: "function", color: i.rsiColor, opacity: 1}, // ROI
           2: { color: 'blue', opacity: 1 }, // Obere Schwelle
         },
     };
