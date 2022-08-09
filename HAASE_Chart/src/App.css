@@ -1,5 +1,5 @@
 .App {
-  margin: 5%;
+  margin: 2%;
   text-align: center;
 }
 
@@ -78,4 +78,8 @@ button {
   bottom: 5px;
   right: 10px;
   opacity: 0.3;
+}
+
+img {
+  height: 70px;
 }

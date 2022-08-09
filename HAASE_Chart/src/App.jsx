@@ -13,14 +13,15 @@ export default function App() {
 
   return (
     <div className="App">
-
-      <Typography sx={{fontSize:"60px", fontWeight:"500"}}>HAASE Chartanalyse</Typography>
-
+      <Box sx={{ margin: "30px", display: "flex", flexDirection: "row", gap: "30px", alignItems:"center", display: "flex", justifyContent: "center"}}>
+    <img src="/images/HAASE_Logo3slim.jpg"></img>
+      <Typography sx={{fontSize:"50px", fontWeight:"400"}}>Chartanalyse</Typography>
+      </Box>
       <SelectionCard/>
       <GraphMenu />
       <Graph />
 
-      <Typography id="aboutUs">by Hans,Able,Aigner,Sandner & Eisenmann &bull; HAW Landshut</Typography>
+      <Typography id="aboutUs">by Hans, Able, Aigner, Sandner & Eisenmann &bull; HAW Landshut</Typography>
     </div>
   )
 }

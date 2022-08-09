@@ -331,7 +331,12 @@ export default function SelectionCard() {
                         <Typography sx={{ width: 300 }} variant='h6'>
                             MACD-Indikator
                         </Typography>
-                        <Tooltip sx={{ width: 25 }} title="Ein steigender MACD zeigt einen Aufwärtstrend, ein fallender MACD einen Abwärtstrend an.">
+                        <Tooltip sx={{ width: 25 }} title={<div>Der Moving Average Convergence Divergence besteht aus zwei Elementen: <br/>
+                            zwei Gleitenden Durchschnitten (der MACD-Linie und der Signallinie). Die weiße MACD-Linie ist die Differenz aus einem längeren und einem kürzeren EMA (üblicherweise 12 und 26 Perioden),
+                            die rote Signallinie ist ein EMA auf die MACD-Linie.
+                            <br/>
+                            Ein steigender MACD zeigt einen Aufwärtstrend, ein fallender MACD einen Abwärtstrend an.
+                            </div>}>
                         <InfoIcon></InfoIcon>
                         </Tooltip>
                         <FormControl sx={{ width: 150 }} size="small">
