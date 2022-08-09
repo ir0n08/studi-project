@@ -97,7 +97,7 @@ export function updateChart(i)  {
             </Box>
             <Box sx={{ display: mcasHidden }} >
                 <br/><br/><br/>
-                <h3>MCAS</h3><br/>
+                <h3>MACD-Indikator</h3><br/>
                 <Chart
                 chartType="Line"
                 width="100%"
@@ -108,7 +108,7 @@ export function updateChart(i)  {
             </Box>
             <Box sx={{ display: rsiHidden }} >
                     <br/><br/><br/>
-                    <h3>RSI</h3><br/>
+                    <h3>RS-Indikator</h3><br/>
                     <Chart
                     chartType="Line"
                     width="100%"

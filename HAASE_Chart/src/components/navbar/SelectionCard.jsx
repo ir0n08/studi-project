@@ -198,7 +198,11 @@ export default function SelectionCard() {
                         <Typography sx={{ width: 300 }} variant='h6'>
                             Kerzenchart
                         </Typography>
-                        <Tooltip sx={{ width: 25 }} title="Was ist das für ein Graph">
+                        <Tooltip sx={{ width: 25 }} title={<div>Ein roter Kerzenkörper zeigt an, dass der Schlusskurs unter dem Eröffnungskurs liegt. Der Kurs ist gefallen.<br/>
+                        Ein grüner Kerzenkörper zeigt an, dass der Schlusskurs über dem Eröffnungskurs liegt. Der Kurs ist gestiegen.<br/>
+                        <br/>
+                        Der obere Schatten, auch Docht genannt, zeigt den Höchstwert an.<br/>
+                        Der untere Schatten, auch Lunte genannt, zeigt den Tiefstwert an.</div>}>
                         <InfoIcon></InfoIcon>
                         </Tooltip>
                         <FormControl sx={{ width: 150, display:'block',visibility: 'hidden' }} size="small">

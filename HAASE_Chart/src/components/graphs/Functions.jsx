@@ -36,10 +36,10 @@ export function getClosingByDay(stockData,startDate,endDate,median=false,medianD
   }
 
   if(candle == true) {
-    tempArray.push({id: "i0", type: "number", label: "Candle chart"});
-    tempArray.push({id: "i1", type: "number", label: "Candle chart"});
-    tempArray.push({id: "i3", type: "number", label: "Candle chart"});
-    tempArray.push({id: "i4", type: "number", label: "Candle chart"});
+    tempArray.push({id: "i0", type: "number", label: "Kerzenchart"});
+    tempArray.push({id: "i1", type: "number", label: "Kerzenchart"});
+    tempArray.push({id: "i3", type: "number", label: "Kerzenchart"});
+    tempArray.push({id: "i4", type: "number", label: "Kerzenchart"});
   }
 
   var resArray = [tempArray];
@@ -48,7 +48,7 @@ export function getClosingByDay(stockData,startDate,endDate,median=false,medianD
   // init MCAS Output Array
   var resMCAS = [[{ 
     type: "string", label: "Datum"}, 
-    {type: "number", label:"MCAS"},
+    {type: "number", label:"MACD"},
     {type: "number", label:"Signal"}
   ]];
 
@@ -56,7 +56,7 @@ export function getClosingByDay(stockData,startDate,endDate,median=false,medianD
   var resRSI = [[{ 
     type: "string", label: "Datum"}, 
     {type: "number", label:"Unter Grenze"},
-    {type: "number", label:"RSI"},
+    {type: "number", label:"RS"},
     {type: "number", label:"Obere Grenze"}
   ]];
 
