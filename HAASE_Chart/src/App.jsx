@@ -14,7 +14,7 @@ export default function App() {
   return (
     <div className="App">
 
-      <Typography sx={{fontSize:"60px", fontWeight:"500"}}>HAASE Chartanalyse</Typography>
+      <Typography sx={{fontSize:"60px", fontWeight:"500", marginBottom:"40px"}}>HAASE Chartanalyse</Typography>
 
       <SelectionCard/>
       <GraphMenu />

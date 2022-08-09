@@ -54,7 +54,7 @@ export default function GraphMenu() {
             <Tooltip 
             title={<div>Zwischen Startdatum und Enddatum müssen mindestens 14 Tage liegen.<br/><br/>Beachten Sie, dass die Börsen Samstag und Sonntag geschlossen sind und somit für diese Tage keine Werte existieren.<br/>
             <br/>Beginn der Werte-Erhebung: 2000-01-03.<br/>Derzeitiges Ende der Werte-Erhebung: 2022-06-17.</div>} arrow>
-            <InfoIcon ></InfoIcon>
+            <InfoIcon sx={{justifyContent:"center"}}></InfoIcon>
             </Tooltip>
             </Box>
 
