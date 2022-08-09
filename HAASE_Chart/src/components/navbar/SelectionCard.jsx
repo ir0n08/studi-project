@@ -13,8 +13,6 @@ import FormControlLabel from '@mui/material/FormControlLabel';
 import InfoIcon from '@mui/icons-material/Info';
 import Tooltip from '@mui/material/Tooltip';
 
-
-
 export default function SelectionCard() {
 
     let companyNames = [];
@@ -77,6 +75,7 @@ export default function SelectionCard() {
 
 
     //UseStates für Farbauswahl der verschiedenen Graphen
+
     /* Kerzencharts färben macht keinen Sinn, damit raus*/
     const [kerzenchartColour, setKerzenchartColour] = React.useState('');
     const handleKerzenchartColour = (event) => {
@@ -126,6 +125,19 @@ export default function SelectionCard() {
         updateChart(chartInput);
     };
 
+    //UseStates für Anzahl Tage Gl.D. und Standardabweichung Bollinger
+    const [gleitenderDurchschnittTage, setGleitenderDurchschnittTage] = React.useState(200);   //ToDo Anpassen durch Paul
+    const handleGleitenderDurchschnittTage = (event) => {
+        setGleitenderDurchschnittTage(event.target.value);
+        Object.assign(chartInput, { color: event.target.value });
+        updateChart(chartInput);
+    };
+    const [bollingerAbweichung, setBollingerAbweichung] = React.useState('95%');       //ToDo Anpassen durch Paul
+    const handleBollingerAbweichung = (event) => {
+        setBollingerAbweichung(event.target.value);
+        Object.assign(chartInput, { color: event.target.value });
+        updateChart(chartInput);
+    };
 
 
 
@@ -161,10 +173,10 @@ export default function SelectionCard() {
                                 <FormControl sx={{ minWidth: 285 }} size="small">
                                     <InputLabel id={"select-company"}>Aktie</InputLabel>
                                     <Select
-                                        lableid="select-company"
+                                        labelid="select-company"
                                         id="select-company"
                                         value={stockName}
-                                        lable="company"
+                                        label="Aktie"
                                         onChange={handleSelectName}
                                     >
                                         {companyNames}
@@ -172,13 +184,13 @@ export default function SelectionCard() {
                                 </FormControl>
                             </Box>
                             <Box>
-                                <FormControl sx={{ minWidth: 285 }} size="small">
-                                    <InputLabel id={"select-company"}>Einfärbung Aktienkurs</InputLabel>
+                                <FormControl sx={{ minWidth: 285}} size="small">
+                                    <InputLabel id={"select-company"} >Einfärbung Aktienkurs</InputLabel>
                                     <Select
-                                        lableid="select-kurs-colour"
+                                        labelid="select-kurs-colour"
                                         id="select-kurs-colour"
-                                        value={stockColour}
-                                        lable="company"
+                                        value={kursColour}
+                                        label="Einfärbung Aktienkurs"
                                         onChange={handleStockColour}
                                     >
                                         <MenuItem value={'#55EAB1'}>Türkis</MenuItem>
@@ -197,7 +209,7 @@ export default function SelectionCard() {
                     </Box>
 
                 </Box>
-                <Box sx={{ margin: "10px", display: "flex", flexDirection: "column", gap: "10px" }}>
+                <Box sx={{ margin: "10px", display: "flex", flexDirection: "column", gap: "10px", border: "1px solid #BBBBBB", padding:"10px", borderRadius: "7px"}}>
                     <Box sx={{ display: "flex", flexDirection: "row", alignItems: "center", gap: "20px", width: "500px", justifyContent: "space-between" }}>
                         <FormControlLabel sx={{ width: 25 }} control={<Checkbox sx={{ marginRight: "0" }} checked={kerzenchartCheck} onChange={toggleKerzenchartCheck} />} />
                         <Typography sx={{ width: 300 }} variant='h6'>
@@ -212,7 +224,7 @@ export default function SelectionCard() {
                                 lableid="select-kerzenchart-colour"
                                 id="select-kerzenchart-colour"
                                 value={kerzenchartColour}
-                                lable="kerzenchartColour"
+                                lable="Einfärbung"
                                 onChange={handleKerzenchartColour}
                             >
                                 <MenuItem value={'#55EAB1'}>Türkis</MenuItem>
@@ -226,7 +238,6 @@ export default function SelectionCard() {
                                 <MenuItem value={'#858585'}>Grau</MenuItem>
                             </Select>
                         </FormControl>
-                        
                     </Box>
 
                     <Box sx={{ display: "flex", flexDirection: "row", alignItems: "center", gap: "20px", width: "650px", justifyContent: "space-between" }}>
@@ -243,7 +254,7 @@ export default function SelectionCard() {
                                 lableid="select-gleitenderDurchschnitt-colour"
                                 id="select-gleitenderDurchschnitt-colour"
                                 value={gleitenderDurchschnittColour}
-                                lable="gleitenderDurchschnittColour"
+                                label="Einfärbung"
                                 onChange={handleGleitenderDurchschnittColour}
                             >
                                 <MenuItem value={'#55EAB1'}>Türkis</MenuItem>
@@ -260,10 +271,10 @@ export default function SelectionCard() {
                         <FormControl sx={{ width: 150 }} size="small">
                             <InputLabel id="select-gleitenderDurchschnitt-tage">Anzahl Tage</InputLabel>
                             <Select
-                                lableid="select-gleitenderDurchschnitt-tage"
+                                labelid="select-gleitenderDurchschnitt-tage"
                                 id="select-gleitenderDurchschnitt-tage"
                                 value={gleitenderDurchschnittTage}
-                                lable="gleitenderDurchschnittTage"
+                                label="Anzahl Tage"
                                 onChange={handleGleitenderDurchschnittTage}
                             >
                                 <MenuItem value={30}>30</MenuItem>
@@ -275,73 +286,6 @@ export default function SelectionCard() {
                         </FormControl>
                         
                     </Box>
-                
-
-                    <Box sx={{ display: "flex", flexDirection: "row", alignItems: "center", gap: "20px", width: "500px", justifyContent: "space-between" }}>
-                        <FormControlLabel sx={{ width: 25 }} control={<Checkbox checked={macdCheck} onChange={toggleMacdCheck} />} />
-                        <Typography sx={{ width: 300 }} variant='h6'>
-                            MACD-Indikator
-                        </Typography>
-                        <Tooltip sx={{ width: 25 }} title="Ein steigender MACD zeigt einen Aufwärtstrend, ein fallender MACD einen Abwärtstrend an.">
-                        <InfoIcon></InfoIcon>
-                        </Tooltip>
-                        <FormControl sx={{ width: 150 }} size="small">
-                            <InputLabel id="select-MACD-colour">Einfärbung</InputLabel>
-                            <Select
-                                lableid="select-MACD-colour"
-                                id="select-MACD-colour"
-                                value={macdColour}
-                                lable="macdColour"
-                                onChange={handleMacdColour}
-                            >
-                                <MenuItem value={'#55EAB1'}>Türkis</MenuItem>
-                                <MenuItem value={'#3028EB'}>Blau</MenuItem>
-                                <MenuItem value={'#60EB00'}>Hellgrün</MenuItem>
-                                <MenuItem value={'#EB3C17'}>Rot</MenuItem>
-                                <MenuItem value={'#FFEB02'}>Gelb</MenuItem>
-                                <MenuItem value={'#EBC50C'}>Orange</MenuItem>
-                                <MenuItem value={'#4B006B'}>Lila</MenuItem>
-                                <MenuItem value={'#051700'}>Schwarz</MenuItem>
-                                <MenuItem value={'#858585'}>Grau</MenuItem>
-                            </Select>
-                        </FormControl>
-                    </Box>
-
-                    <Box sx={{ display: "flex", flexDirection: "row", alignItems: "center", gap: "20px", width: "500px", justifyContent: "space-between" }}>
-                        <FormControlLabel sx={{ width: 25 }} control={<Checkbox checked={rsCheck} onChange={toggleRsCheck} />} />
-                        <Typography sx={{ width: 300 }} variant='h6'>
-                            RS-Indikator
-                        </Typography>
-                        <Tooltip sx={{ width: 25 }} 
-                        title={<div>RSI steht für relative Stärke Index. Er ist ein wichtiges Instrument in der technischen Analyse, da er die Dynamik eines Assets 
-                            bestimmt und beurteilt, ob sich dieses in einem überkauften oder überverkauften Bereich befindet. <br/><br/>
-                            Das Ergebnis ist ein Wert zwischen 0-100. Die meisten Analysten glauben, dass ein Asset bei einem Level von 70 überkauft ist 
-                            und damit zu einer Korrektur neigen könnte, während ein Asset mit einem Niveau von 30 überverkauft 
-                            ist und womöglich bereit für eine Rally ist.</div>}>
-                        <InfoIcon></InfoIcon>
-                        </Tooltip>
-                        <FormControl sx={{ width: 150 }} size="small">
-                            <InputLabel id="select-rs-colour">Einfärbung</InputLabel>
-                            <Select
-                                lableid="select-rs-colour"
-                                id="select-rs-colour"
-                                value={rsColour}
-                                lable="rsColour"
-                                onChange={handleRsColour}
-                            >
-                                <MenuItem value={'#55EAB1'}>Türkis</MenuItem>
-                                <MenuItem value={'#3028EB'}>Blau</MenuItem>
-                                <MenuItem value={'#60EB00'}>Hellgrün</MenuItem>
-                                <MenuItem value={'#EB3C17'}>Rot</MenuItem>
-                                <MenuItem value={'#FFEB02'}>Gelb</MenuItem>
-                                <MenuItem value={'#EBC50C'}>Orange</MenuItem>
-                                <MenuItem value={'#4B006B'}>Lila</MenuItem>
-                                <MenuItem value={'#051700'}>Schwarz</MenuItem>
-                                <MenuItem value={'#858585'}>Grau</MenuItem>
-                            </Select>
-                        </FormControl>
-                    </Box>
-
                     <Box sx={{ display: "flex", flexDirection: "row", alignItems: "center", gap: "20px", width: "650px", justifyContent: "space-between" }}>
                         <FormControlLabel sx={{ width: 25 }} control={<Checkbox checked={bollingerCheck} onChange={toggleBollingerCheck} />} />
                         <Typography sx={{ width: 300 }} variant='h6'>
@@ -359,10 +303,10 @@ export default function SelectionCard() {
                         <FormControl sx={{ width: 150 }} size="small">
                             <InputLabel id="select-bollinger-colour">Einfärbung</InputLabel>
                             <Select
-                                lableid="select-bollinger-colour"
+                                labelid="select-bollinger-colour"
                                 id="select-bollinger-colour"
                                 value={bollingerColour}
-                                lable="bollingerColour"
+                                label="Einfärbung"
                                 onChange={handleBollingerColour}
                             >
                                 <MenuItem value={'#55EAB1'}>Türkis</MenuItem>
@@ -376,13 +320,14 @@ export default function SelectionCard() {
                                 <MenuItem value={'#858585'}>Grau</MenuItem>
                             </Select>
                         </FormControl>
+
                         <FormControl sx={{ width: 150 }} size="small">
                             <InputLabel id="select-bollinger-abweichung">Abweichung</InputLabel>
                             <Select
-                                lableid="select-bollinger-abweichung"
+                                labelid="select-bollinger-abweichung"
                                 id="select-bollinger-abweichung"
                                 value={bollingerAbweichung}
-                                lable="bollingerAbweichung"
+                                label="Abweichung"
                                 onChange={handleBollingerAbweichung}
                             >
                                 <MenuItem value={1}>68,3%</MenuItem>
@@ -393,23 +338,76 @@ export default function SelectionCard() {
                             </Select>
                         </FormControl>
                     </Box>
+
+                    <Box sx={{ display: "flex", flexDirection: "row", alignItems: "center", gap: "20px", width: "500px", justifyContent: "space-between" }}>
+                        <FormControlLabel sx={{ width: 25 }} control={<Checkbox checked={macdCheck} onChange={toggleMacdCheck} />} />
+                        <Typography sx={{ width: 300 }} variant='h6'>
+                            MACD-Indikator
+                        </Typography>
+                        <Tooltip sx={{ width: 25 }} title="Ein steigender MACD zeigt einen Aufwärtstrend, ein fallender MACD einen Abwärtstrend an.">
+                        <InfoIcon></InfoIcon>
+                        </Tooltip>
+                        <FormControl sx={{ width: 150 }} size="small">
+                            <InputLabel id="select-MACD-colour">Einfärbung</InputLabel>
+                            <Select
+                                labelid="select-MACD-colour"
+                                id="select-MACD-colour"
+                                value={macdColour}
+                                label="Einfärbung"
+                                onChange={handleMacdColour}
+                            >
+                                <MenuItem value={'#55EAB1'}>Türkis</MenuItem>
+                                <MenuItem value={'#3028EB'}>Blau</MenuItem>
+                                <MenuItem value={'#60EB00'}>Hellgrün</MenuItem>
+                                <MenuItem value={'#EB3C17'}>Rot</MenuItem>
+                                <MenuItem value={'#FFEB02'}>Gelb</MenuItem>
+                                <MenuItem value={'#EBC50C'}>Orange</MenuItem>
+                                <MenuItem value={'#4B006B'}>Lila</MenuItem>
+                                <MenuItem value={'#051700'}>Schwarz</MenuItem>
+                                <MenuItem value={'#858585'}>Grau</MenuItem>
+                            </Select>
+                        </FormControl>
+                    </Box>
+                    <Box sx={{ display: "flex", flexDirection: "row", alignItems: "center", gap: "20px", width: "500px", justifyContent: "space-between" }}>
+                        <FormControlLabel sx={{ width: 25 }} control={<Checkbox checked={rsCheck} onChange={toggleRsCheck} />} />
+                        <Typography sx={{ width: 300 }} variant='h6'>
+                            RS-Indikator
+                        </Typography>
+                        <Tooltip sx={{ width: 25 }} 
+                        title={<div>RSI steht für relative Stärke Index. Er ist ein wichtiges Instrument in der technischen Analyse, da er die Dynamik eines Assets 
+                            bestimmt und beurteilt, ob sich dieses in einem überkauften oder überverkauften Bereich befindet. <br/><br/>
+                            Das Ergebnis ist ein Wert zwischen 0-100. Die meisten Analysten glauben, dass ein Asset bei einem Level von 70 überkauft ist 
+                            und damit zu einer Korrektur neigen könnte, während ein Asset mit einem Niveau von 30 überverkauft 
+                            ist und womöglich bereit für eine Rally ist.</div>}>
+                        <InfoIcon></InfoIcon>
+                        </Tooltip>
+                        <FormControl sx={{ width: 150 }} size="small">
+                            <InputLabel id="select-rs-colour">Einfärbung</InputLabel>
+                            <Select
+                                labelid="select-rs-colour"
+                                id="select-rs-colour"
+                                value={rsColour}
+                                label="Einfärbung"
+                                onChange={handleRsColour}
+                            >
+                                <MenuItem value={'#55EAB1'}>Türkis</MenuItem>
+                                <MenuItem value={'#3028EB'}>Blau</MenuItem>
+                                <MenuItem value={'#60EB00'}>Hellgrün</MenuItem>
+                                <MenuItem value={'#EB3C17'}>Rot</MenuItem>
+                                <MenuItem value={'#FFEB02'}>Gelb</MenuItem>
+                                <MenuItem value={'#EBC50C'}>Orange</MenuItem>
+                                <MenuItem value={'#4B006B'}>Lila</MenuItem>
+                                <MenuItem value={'#051700'}>Schwarz</MenuItem>
+                                <MenuItem value={'#858585'}>Grau</MenuItem>
+                            </Select>
+                        </FormControl>
+                    </Box>
+
+                    
                 </Box>
             </Box>
 
         </Box>
     )
-
 }
-
-
-
-
-/*
-function setStockNameGlobal(name) {
-    console.log("setSN:"+name);
-    //var data = google.visualization.arrayToDataTable(r.d);
-    //var chart = new google.visualization.LineChart($("#chartArea")[0]);
-    //chart.draw(data, options);
-    Object.assign(resObj, { id: name} );
-    updateChart(name,'2020-03-01','2020-07-01');
-}*/
+// EOF puff pretty lenghty... cant this be split up?

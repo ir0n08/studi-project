@@ -13,6 +13,7 @@ import {updateChart} from '../graphs/UpdateGraph';
 import {chartInput} from '../graphs/Graph';
 
 
+
 export default function GraphMenu() {
 
   const [startdatum, setStartdatum] = React.useState(new Date(chartInput.start));
@@ -49,7 +50,7 @@ export default function GraphMenu() {
 
 
   return (
-    <div>
+    <div>     
       <Box sx={{ display:"flex", justifyContent:"center", gap:"50px", marginTop:"40px"}}>
           <LocalizationProvider dateAdapter={AdapterDateFns} locale={enLocale}>
 
@@ -70,6 +71,13 @@ export default function GraphMenu() {
                 onChange={handleEnddatum}
                 renderInput={(params) => <TextField {...params} />}
               />
+            </Box>
+            <Box>
+            <Tooltip 
+            title={<div>Zwischen Startdatum und Enddatum müssen mindestens 14 Tage liegen.<br/><br/>Beachten Sie, dass die Börsen Samstag und Sonntag geschlossen sind und somit für diese Tage keine Werte existieren.<br/>
+            <br/>Beginn der Werte-Erhebung: 2000-01-03.<br/>Derzeitiges Ende der Werte-Erhebung: 2022-06-17.</div>} arrow>
+            <InfoIcon ></InfoIcon>
+            </Tooltip>
             </Box>
 
             <Box>
