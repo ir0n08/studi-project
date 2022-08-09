@@ -13,7 +13,7 @@ export function updateChart(i)  {
     let [stockClosingData,mcasData,rsiData] = getClosingByDay(cStockData,i.start,i.end,i.median,i.medianInt,i.bol,i.bolFactor,i.candle);
     
     var options = {
-        title:cStockData.name +" ("+ i.id + ")",
+        title: cStockData.name +" ("+ i.id + ")",
         legend: 'bottom',
         chartArea: {
             width: '80%'
@@ -21,7 +21,7 @@ export function updateChart(i)  {
         series : {
             0: { color: i.color } // actuale stock value
         },
-        vAxis: { viewWindowMode: "maximized" },
+        vAxis: { viewWindowMode: "maximized", format:'#.## \u20AC'  },
         intervals: {  },
         candlestick: {  }
     };
@@ -33,8 +33,6 @@ export function updateChart(i)  {
     
     let medianoffset = 0;
     if(i.median == true) {
-        console.log(i.colorMedium);
-        //options.series.n1 = { curveType: "function", color: i.colorMedium, opacity: 1}; // average line
         options.series[1] = { curveType: "function", color: i.colorMedium, opacity: 1}; // average line
         medianoffset++;
     }
@@ -54,8 +52,10 @@ export function updateChart(i)  {
       
 
     var optionsMCAS = {
-        hAxis: {title: "Datum"},
+        title: "MACS Chart",
+        hAxis: {},
         vAxis: {title: "Signalhöhe"},
+
         series: {
           0: { curveType: "function", color: i.mcasColor, opacity: 1 }, // MCAS
           1: { curveType: "function", color: 'red', opacity: 1}, // SIGNAL
@@ -63,18 +63,16 @@ export function updateChart(i)  {
     };
 
     var optionsRSI = {
+        title: "RS-Index Chart",
         chartArea: {
           width: '80%'
         },
-        legend: 'bottom',
         series: {
           0: { color: 'blue', opacity: 1 }, // Untere Schwelle
           1: { curveType: "function", color: i.rsiColor, opacity: 1}, // ROI
           2: { color: 'blue', opacity: 1 }, // Obere Schwelle
         },
     };
-    console.log(options);
-
     
     const rootUpdate = ReactDOM.createRoot(
         document.getElementById('chartArea')
@@ -86,6 +84,7 @@ export function updateChart(i)  {
     let rsiHidden = (i.rsi == true ? "" : "none");
     var ele = (
         <Box>
+            
             <Box id="mainChart">
                     <Chart
                     chartType="LineChart"
@@ -96,8 +95,7 @@ export function updateChart(i)  {
                     />
             </Box>
             <Box sx={{ display: mcasHidden }} >
-                <br/><br/><br/>
-                <h3>MACD-Indikator</h3><br/>
+                <br/><br/>
                 <Chart
                 chartType="Line"
                 width="100%"
@@ -107,8 +105,7 @@ export function updateChart(i)  {
                 />
             </Box>
             <Box sx={{ display: rsiHidden }} >
-                    <br/><br/><br/>
-                    <h3>RS-Indikator</h3><br/>
+                    <br/><br/>
                     <Chart
                     chartType="Line"
                     width="100%"

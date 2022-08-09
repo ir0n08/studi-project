@@ -17,7 +17,7 @@ export default function SelectionCard() {
 
     let companyNames = [];
     for (let item of getStockNames(stockData)) {
-        companyNames.push(<MenuItem value={item.isin}>{item.name}</MenuItem>)
+        companyNames.push(<MenuItem value={item.isin} key={item.isin}>{item.name}</MenuItem>)
     }
 
     // select stock and update graph
@@ -42,17 +42,15 @@ export default function SelectionCard() {
     const toggleKerzenchartCheck = (event) => {
         setKerzenchartCheck(event.target.checked)
         Object.assign(chartInput, { candle: event.target.checked });
-        console.log(event.target.checked);
         updateChart(chartInput);
     }
     const [gleitenderDurchschnittCheck, setGleitenderDurchschnittCheck] = React.useState(chartInput.median);
     const toggleGleitenderDurchschnitt = (event) => {
         setGleitenderDurchschnittCheck(event.target.checked)
-        console.log(event.target.checked);
         Object.assign(chartInput, { median: event.target.checked });
         updateChart(chartInput);
     }
-    const [macdCheck, setMacdCheck] = React.useState(chartInput.macs);
+    const [macdCheck, setMacdCheck] = React.useState(chartInput.mcas);
     const toggleMacdCheck = (event) => {
         setMacdCheck(event.target.checked);
         Object.assign(chartInput, { mcas: event.target.checked });

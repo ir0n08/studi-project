@@ -43,7 +43,6 @@ export function getClosingByDay(stockData,startDate,endDate,median=false,medianD
   }
 
   var resArray = [tempArray];
-  console.log(resArray);
   
   // init MCAS Output Array
   var resMCAS = [[{ 

@@ -23,7 +23,6 @@ export default function GraphMenu() {
     if(newStartdatum >= minOffset) {
       alert("Mindestabstand für die HASSE Analyse sind 14 Tage");
       newStartdatum = new Date(checkDate.getTime() - (30*24*60*60*1000));
-      console.log(newStartdatum);
     } 
     setStartdatum(newStartdatum);
     Object.assign(chartInput, { start: newStartdatum.toISOString().split('T')[0] });
@@ -38,7 +37,6 @@ export default function GraphMenu() {
     if(newEnddatum <= minOffset) {
       alert("Mindestabstand für die HASSE Analyse sind 14 Tage");
       newEnddatum = new Date(checkDate.getTime() + (30*24*60*60*1000));
-      console.log(newEnddatum);
     } 
 
     setEnddatum(newEnddatum);
@@ -52,7 +50,7 @@ export default function GraphMenu() {
   return (
     <div>     
       <Box sx={{ display:"flex", justifyContent:"center", gap:"50px", marginTop:"40px"}}>
-          <LocalizationProvider dateAdapter={AdapterDateFns} locale={enLocale}>
+          <LocalizationProvider dateAdapter={AdapterDateFns} adapterLocale={enLocale}>
 
             <Box>
               <DesktopDatePicker

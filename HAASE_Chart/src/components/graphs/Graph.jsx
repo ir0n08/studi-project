@@ -10,16 +10,15 @@ import { useState } from 'react';
 
 
 export var chartInput = {};
-Object.assign(chartInput, { id: 'DE0008404005',start:'2022-03-01',end:'2022-06-01',candle:false,mcas:false,rsi:false,median:false,medianInt:200,colorMedium:'#55EAB1',bolFactor:2,colorBol:'#858585',color:'#3028EB',bol:false,rsiColor:'#EB3C17',mcasColor:'#3028EB'} );
+Object.assign(chartInput, { id: 'DE0008404005',start:'2022-03-01',end:'2022-06-01',candle:false,mcas:true,rsi:true,median:false,medianInt:200,colorMedium:'#55EAB1',bolFactor:2,colorBol:'#858585',color:'#3028EB',bol:false,rsiColor:'#EB3C17',mcasColor:'#3028EB'} );
 
 
 var cStockID = chartInput.id; 
 let medianOn = chartInput.median;
 export var cStockData = getSingleStock(cStockID,stockData); 
-console.log(cStockData);
 
 export var options = {
-  title:cStockData.name +" ("+ chartInput.id + ")",
+  title: cStockData.name +" ("+ chartInput.id + ")",
   legend: 'bottom',
   chartArea: {
       width: '80%'
@@ -27,7 +26,8 @@ export var options = {
   series : {
       0: { color: chartInput.color } // actuale stock value
   },
-  vAxis: { viewWindowMode: "maximized" },
+  hAxis: { },
+  vAxis: { viewWindowMode: "maximized",format:'#.## \u20AC' },
   intervals: {  },
   candlestick: {  }
 };
@@ -59,6 +59,7 @@ if(chartInput.candle == true) {
 }
 
 export var optionsMCAS = {
+  'title': "MACS_Chart",
   chartArea: {
     width: '80%'
   },
@@ -79,6 +80,7 @@ export var optionsRSI = {
     1: { curveType: "function", color: chartInput.rsiColor, opacity: 1}, // ROI
     2: { color: 'blue', opacity: 1 }, // Obere Schwelle
   },
+  title:'RS-Index Chart'
 };
 
 export var [stockClosingData,mcasData,rsiData] = getClosingByDay(cStockData,chartInput.start,chartInput.end,chartInput.median,chartInput.medianInt,chartInput.bol,chartInput.bolFactor,chartInput.candle);
@@ -109,8 +111,7 @@ export default function Graph(){
                 />
               </Box>
               <Box sx={{ display: mcasHidden }} >
-                <br/><br/><br/>
-                <h3>MACD-Indikator</h3><br/>
+                <br/><br/>
                 <Chart
                 chartType="Line"
                 width="100%"
@@ -120,9 +121,7 @@ export default function Graph(){
                 />
               </Box>
               <Box sx={{ display: rsiHidden }} >
-                <br/><br/><br/>
-                
-                <h3>RS-Indikator</h3><br/>
+                <br/><br/>
 
                 <Chart
                 chartType="Line"
