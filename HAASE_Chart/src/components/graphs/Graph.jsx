@@ -12,7 +12,7 @@ export const startDay = '2020-03-01'; // 2be replace by input data
 export const endDay = '2020-07-01';
 
 export var chartInput = {};
-Object.assign(chartInput, { id: 'DE0008404005',start:'2020-03-01',end:'2020-07-01',candle:true,mcas:false,rsi:false,median:false,medianInt:200,colorMedium:'#3028EB',bolFactor:2,colorBol:'#FFEB02',color:'#051700',bol:false,rsiColor:'#60EB00',mcasColor:'#55EAB1'} );
+Object.assign(chartInput, { id: 'DE0008404005',start:'2022-03-01',end:'2022-06-01',candle:false,mcas:false,rsi:false,median:false,medianInt:200,colorMedium:'#55EAB1',bolFactor:2,colorBol:'#858585',color:'#3028EB',bol:false,rsiColor:'#EB3C17',mcasColor:'#3028EB'} );
 
 
 var cStockID = chartInput.id; 
@@ -77,7 +77,7 @@ export var optionsRSI = {
   legend: 'bottom',
   series: {
     0: { color: 'blue', opacity: 1 }, // Untere Schwelle
-    1: { curveType: "function", color: 'orange', opacity: 1}, // ROI
+    1: { curveType: "function", color: chartInput.rsiColor, opacity: 1}, // ROI
     2: { color: 'blue', opacity: 1 }, // Obere Schwelle
   },
 };
