@@ -13,9 +13,6 @@ import FormControlLabel from '@mui/material/FormControlLabel';
 import InfoIcon from '@mui/icons-material/Info';
 import Tooltip from '@mui/material/Tooltip';
 
-
-
-
 export default function SelectionCard() {
 
     let companyNames = [];
@@ -23,90 +20,108 @@ export default function SelectionCard() {
         companyNames.push(<MenuItem value={item.isin}>{item.name}</MenuItem>)
     }
 
-    const [stockName, setStockName] = React.useState('');
+    // select stock and update graph
+    const [stockName, setStockName] = React.useState(chartInput.id);
     const handleSelectName = (event) => {
-        //console.log(event.target.value);
         setStockName(event.target.value);
         Object.assign(chartInput, { id: event.target.value });
         updateChart(chartInput);
     };
 
 
-    //Der kommt noch weg, genauso der Input direkt unter Company, jede Grafi kkriegt eigenen Handler
-    const [stockColour, setStockColour] = React.useState('');
-    const handleSelectColour = (event) => {
+    // Set Stock color and update graph
+    const [stockColour, setStockColour] = React.useState(chartInput.color);
+    const handleStockColour = (event) => {
         setStockColour(event.target.value);
         Object.assign(chartInput, { color: event.target.value });
         updateChart(chartInput);
     };
-    //Der kommt auch noch weg normal
-    const [stockGraph, setStockGraph] = React.useState('');
-    const handleSelectGraph = (event) => {
-        setStockGraph(event.target.value);
-    };
-
-
 
     //UseStates für Checkboxes
-    const [kerzenchartCheck, setKerzenchartCheck] = React.useState(false);
+    const [kerzenchartCheck, setKerzenchartCheck] = React.useState(chartInput.candle);
     const toggleKerzenchartCheck = (event) => {
         setKerzenchartCheck(event.target.checked)
+        Object.assign(chartInput, { candle: event.target.checked });
+        console.log(event.target.checked);
+        updateChart(chartInput);
     }
-    const [gleitenderDurchschnittCheck, setGleitenderDurchschnittCheck] = React.useState(false);
+    const [gleitenderDurchschnittCheck, setGleitenderDurchschnittCheck] = React.useState(chartInput.median);
     const toggleGleitenderDurchschnitt = (event) => {
         setGleitenderDurchschnittCheck(event.target.checked)
+        console.log(event.target.checked);
+        Object.assign(chartInput, { median: event.target.checked });
+        updateChart(chartInput);
     }
-    const [macdCheck, setMacdCheck] = React.useState(false);
+    const [macdCheck, setMacdCheck] = React.useState(chartInput.macs);
     const toggleMacdCheck = (event) => {
-        setMacdCheck(event.target.checked)
+        setMacdCheck(event.target.checked);
+        Object.assign(chartInput, { mcas: event.target.checked });
+        updateChart(chartInput);
     }
-    const [rsCheck, setRsCheck] = React.useState(false);
+    const [rsCheck, setRsCheck] = React.useState(chartInput.rsi);
     const toggleRsCheck = (event) => {
-        setRsCheck(event.target.checked)
+        setRsCheck(event.target.checked);
+        Object.assign(chartInput, { rsi: event.target.checked });
+        updateChart(chartInput);
     }
-    const [bollingerCheck, setBollingerCheck] = React.useState(false);
+    const [bollingerCheck, setBollingerCheck] = React.useState(chartInput.bol);
     const toggleBollingerCheck = (event) => {
-        setBollingerCheck(event.target.checked)
+        setBollingerCheck(event.target.checked);
+        Object.assign(chartInput, { bol: event.target.checked });
+        updateChart(chartInput);
     }
 
 
 
 
     //UseStates für Farbauswahl der verschiedenen Graphen
-    const [kursColour, setKursColour] = React.useState('');
-    const handleKursColour = (event) => {
-        setKursColour(event.target.value);
-        Object.assign(chartInput, { color: event.target.value });
-        updateChart(chartInput);
-    };
+
+    /* Kerzencharts färben macht keinen Sinn, damit raus*/
     const [kerzenchartColour, setKerzenchartColour] = React.useState('');
     const handleKerzenchartColour = (event) => {
-        setKerzenchartColour(event.target.value);
+       /* setKerzenchartColour(event.target.value);
         Object.assign(chartInput, { color: event.target.value });
         updateChart(chartInput);
+        */
     };
-    const [gleitenderDurchschnittColour, setGleitenderDurchschnittColour] = React.useState('');
+    
+    const [gleitenderDurchschnittColour, setGleitenderDurchschnittColour] = React.useState(chartInput.colorMedium);
     const handleGleitenderDurchschnittColour = (event) => {
         setGleitenderDurchschnittColour(event.target.value);
-        Object.assign(chartInput, { color: event.target.value });
+        Object.assign(chartInput, { colorMedium: event.target.value });
         updateChart(chartInput);
     };
-    const [macdColour, setMacdColour] = React.useState('');
+    const [macdColour, setMacdColour] = React.useState(chartInput.mcasColor);
     const handleMacdColour = (event) => {
         setMacdColour(event.target.value);
-        Object.assign(chartInput, { color: event.target.value });
+        Object.assign(chartInput, { mcasColor: event.target.value });
         updateChart(chartInput);
     };
-    const [rsColour, setRsColour] = React.useState('');
+    const [rsColour, setRsColour] = React.useState(chartInput.rsiColor);
     const handleRsColour = (event) => {
         setRsColour(event.target.value);
-        Object.assign(chartInput, { color: event.target.value });
+        Object.assign(chartInput, { rsiColor: event.target.value });
         updateChart(chartInput);
     };
-    const [bollingerColour, setBollingerColour] = React.useState('');
+    const [bollingerColour, setBollingerColour] = React.useState(chartInput.colorBol);
     const handleBollingerColour = (event) => {
         setBollingerColour(event.target.value);
-        Object.assign(chartInput, { color: event.target.value });
+        Object.assign(chartInput, { colorBol: event.target.value });
+        updateChart(chartInput);
+    };
+
+    //UseStates für Anzahl Tage Gl.D. und Standardabweichung Bollinger
+    const [gleitenderDurchschnittTage, setGleitenderDurchschnittTage] = React.useState(200);   //ToDo Anpassen durch Paul
+    const handleGleitenderDurchschnittTage = (event) => {
+        setGleitenderDurchschnittTage(event.target.value);
+        Object.assign(chartInput, { medianInt: event.target.value });
+        updateChart(chartInput);
+    };
+
+    const [bollingerAbweichung, setBollingerAbweichung] = React.useState(2);       //ToDo Anpassen durch Paul
+    const handleBollingerAbweichung = (event) => {
+        setBollingerAbweichung(event.target.value);
+        Object.assign(chartInput, { bolFactor: event.target.value });
         updateChart(chartInput);
     };
 
@@ -176,7 +191,7 @@ export default function SelectionCard() {
                                         id="select-kurs-colour"
                                         value={kursColour}
                                         label="Einfärbung Aktienkurs"
-                                        onChange={handleKursColour}
+                                        onChange={handleStockColour}
                                     >
                                         <MenuItem value={'#55EAB1'}>Türkis</MenuItem>
                                         <MenuItem value={'#3028EB'}>Blau</MenuItem>
@@ -203,13 +218,13 @@ export default function SelectionCard() {
                         <Tooltip sx={{ width: 25 }} title="Was ist das für ein Graph">
                         <InfoIcon></InfoIcon>
                         </Tooltip>
-                        <FormControl sx={{ width: 150 }} size="small">
+                        <FormControl sx={{ width: 150, display:'block',visibility: 'hidden' }} size="small">
                             <InputLabel id="select-kerzenchart-colour">Einfärbung</InputLabel>
                             <Select
-                                labelid="select-kerzenchart-colour"
+                                lableid="select-kerzenchart-colour"
                                 id="select-kerzenchart-colour"
                                 value={kerzenchartColour}
-                                label="Einfärbung"
+                                lable="Einfärbung"
                                 onChange={handleKerzenchartColour}
                             >
                                 <MenuItem value={'#55EAB1'}>Türkis</MenuItem>
@@ -236,7 +251,7 @@ export default function SelectionCard() {
                         <FormControl sx={{ width: 150 }} size="small">
                             <InputLabel id="select-gleitenderDurchschnitt-colour">Einfärbung</InputLabel>
                             <Select
-                                labelid="select-gleitenderDurchschnitt-colour"
+                                lableid="select-gleitenderDurchschnitt-colour"
                                 id="select-gleitenderDurchschnitt-colour"
                                 value={gleitenderDurchschnittColour}
                                 label="Einfärbung"
@@ -305,6 +320,7 @@ export default function SelectionCard() {
                                 <MenuItem value={'#858585'}>Grau</MenuItem>
                             </Select>
                         </FormControl>
+
                         <FormControl sx={{ width: 150 }} size="small">
                             <InputLabel id="select-bollinger-abweichung">Abweichung</InputLabel>
                             <Select
@@ -314,11 +330,11 @@ export default function SelectionCard() {
                                 label="Abweichung"
                                 onChange={handleBollingerAbweichung}
                             >
-                                <MenuItem value={'67%'}>67%</MenuItem>
-                                <MenuItem value={'80%'}>80%</MenuItem>
-                                <MenuItem value={'90%'}>90%</MenuItem>
-                                <MenuItem value={'95%'}>95%</MenuItem>
-                                <MenuItem value={'99%'}>99%</MenuItem>
+                                <MenuItem value={1}>68,3%</MenuItem>
+                                <MenuItem value={1.28}>80%</MenuItem>
+                                <MenuItem value={1.64}>90%</MenuItem>
+                                <MenuItem value={2}>95,4%</MenuItem>
+                                <MenuItem value={3}>99,7%</MenuItem>
                             </Select>
                         </FormControl>
                     </Box>
@@ -352,7 +368,6 @@ export default function SelectionCard() {
                             </Select>
                         </FormControl>
                     </Box>
-
                     <Box sx={{ display: "flex", flexDirection: "row", alignItems: "center", gap: "20px", width: "500px", justifyContent: "space-between" }}>
                         <FormControlLabel sx={{ width: 25 }} control={<Checkbox checked={rsCheck} onChange={toggleRsCheck} />} />
                         <Typography sx={{ width: 300 }} variant='h6'>
@@ -395,17 +410,4 @@ export default function SelectionCard() {
         </Box>
     )
 }
-
-
-
-
-/*
-function setStockNameGlobal(name) {
-    console.log("setSN:"+name);
-    //var data = google.visualization.arrayToDataTable(r.d);
-    //var chart = new google.visualization.LineChart($("#chartArea")[0]);
-    //chart.draw(data, options);
-    Object.assign(resObj, { id: name} );
-
-    updateChart(name,'2020-03-01','2020-07-01');
-}*/
+// EOF puff pretty lenghty... cant this be split up?

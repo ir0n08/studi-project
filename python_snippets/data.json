@@ -1,0 +1,51 @@
+[
+   {
+      "field_name": "Fachrichtung / Berufsgruppe",
+      "point1_coordinate_x": "360",
+      "point1_coordinate_y": "1215",
+      "point2_coordinate_x": "1360",
+      "point2_coordinate_y": "1420"
+   },
+   {
+      "field_name": "Projektarbeit",
+      "point1_coordinate_x": "1340",
+      "point1_coordinate_y": "1715",
+      "point2_coordinate_x": "1760",
+      "point2_coordinate_y": "1792"
+   },
+   {
+      "field_name": "Fachgespraech",
+      "point1_coordinate_x": "1340",
+      "point1_coordinate_y": "1785",
+      "point2_coordinate_x": "1760",
+      "point2_coordinate_y": "1855"
+   },
+   {
+      "field_name": "Aufgabe 1",
+      "point1_coordinate_x": "1340",
+      "point1_coordinate_y": "1945",
+      "point2_coordinate_x": "1760",
+      "point2_coordinate_y": "2010"
+   },
+   {
+      "field_name": "Aufgabe 2",
+      "point1_coordinate_x": "1340",
+      "point1_coordinate_y": "2015",
+      "point2_coordinate_x": "1760",
+      "point2_coordinate_y": "2080"
+   },
+   {
+      "field_name": "Wirtschaft und Sozialkunde",
+      "point1_coordinate_x": "1340",
+      "point1_coordinate_y": "2075",
+      "point2_coordinate_x": "1760",
+      "point2_coordinate_y": "2145"
+   },
+   {
+      "field_name": "Bemerkung",
+      "point1_coordinate_x": "350",
+      "point1_coordinate_y": "2225",
+      "point2_coordinate_x": "1850",
+      "point2_coordinate_y": "2410"
+   }
+]
