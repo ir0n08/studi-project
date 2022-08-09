@@ -15,7 +15,7 @@ export function getSingleStock(id,stockData) {
   
 }
 
-export function getClosingByDay(stockData,startDate,endDate,median=false,medianDays=200,bol=false,bolFactor=2) {
+export function getClosingByDay(stockData,startDate,endDate,median=false,medianDays=200,bol=false,bolFactor=2,candle=false) {
 
   stockData = Object.values(stockData);
 
@@ -23,16 +23,23 @@ export function getClosingByDay(stockData,startDate,endDate,median=false,medianD
 
   var tempArray = []; var arrGD = [];var last12 = [];var last26 = [];var lastSignal = [];var lastRSI = []; var arrBollinger = []; 
   let vGD = 0; let fEMA = 0; let sEMA = 0; let MACD = 0; let signalMACD = 0; let closingDayBefore = prices[0].closing; let RSI = 0; let bolMed = 0; let bolLow = 0; let bolUpr = 0; let bolStdDev = 0;
-  tempArray.push( {type: "date", label: "Datum"}, {type: "number", label:"Stock price"},{id: "i0", type: "number", role:"interval"},{id: "i1", type: "number", role:"interval"});
+  tempArray.push( {type: "date", label: "Datum"}, {id: "n0",type: "number", label:"Stock price"});
 
   if(median == true) {
-    tempArray.push({type: "number", label: medianDays +" Tage gleitender Durchschnitt"});
+    tempArray.push({id: "n1", type: "number", label: medianDays +" Tage gleitender Durchschnitt"});
   }
 
   if(bol == true) {
-    tempArray.push({type: "number", label: "Mittleres Bollinger Band"});
+    tempArray.push({id: "n2", type: "number", label: "Mittleres Bollinger Band"});
     tempArray.push({id: "i2", type: "number", label: "Unteres Bollinger Band", role:"interval"});
     tempArray.push({id: "i2", type: "number", label: "Oberes Bollinger Band", role:"interval"});
+  }
+
+  if(candle == true) {
+    tempArray.push({id: "i0", type: "number", label: "Candle chart"});
+    tempArray.push({id: "i1", type: "number", label: "Candle chart"});
+    tempArray.push({id: "i3", type: "number", label: "Candle chart"});
+    tempArray.push({id: "i4", type: "number", label: "Candle chart"});
   }
 
   var resArray = [tempArray];
@@ -54,13 +61,10 @@ export function getClosingByDay(stockData,startDate,endDate,median=false,medianD
   ]];
 
 
-  // funct get slow
-
-
   let oDay = prices.map((dayData) => {
     // if note in day range remove it 
 
-    // get the avarage of last 200 days
+    // get the avarage of last n days
     [vGD, arrGD] = getNmedian(dayData.closing,arrGD,medianDays);
 
     // get MACD data
@@ -83,8 +87,8 @@ export function getClosingByDay(stockData,startDate,endDate,median=false,medianD
     bolLow = bolMed - (bolFactor * bolStdDev);
     
 
-    if(!(dayData.date < startDate || dayData.date > endDate)) {
-      tempArray = [new Date(dayData.date),dayData.closing,dayData.low,dayData.high];
+    if(!(dayData.date < startDate || dayData.date > endDate) && dayData.closing > 0) {
+      tempArray = [new Date(dayData.date),dayData.closing];
       
       if(median == true) {
         tempArray.push(vGD);
@@ -92,6 +96,10 @@ export function getClosingByDay(stockData,startDate,endDate,median=false,medianD
     
       if(bol == true) {
         tempArray.push(bolMed,bolLow,bolUpr);
+      }
+
+      if(candle == true) {
+        tempArray.push(dayData.low,dayData.opening,dayData.closing,dayData.high);
       }
       resArray.push(tempArray);
 
