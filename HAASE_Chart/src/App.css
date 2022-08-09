@@ -80,6 +80,11 @@ button {
   opacity: 0.3;
 }
 
-img {
+#logo {
   height: 70px;
+}
+
+#maxi {
+  margin-top: 50px;
+  height: 50px;
 }
