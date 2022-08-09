@@ -7,9 +7,7 @@ import { Stocks, getSingleStock, getClosingByDay, getStockNames } from "./Functi
 import ReactDOM from "react-dom/client";
 import { useState } from 'react';
 
-//console.log(stockData);
-export const startDay = '2020-03-01'; // 2be replace by input data
-export const endDay = '2020-07-01';
+
 
 export var chartInput = {};
 Object.assign(chartInput, { id: 'DE0008404005',start:'2022-03-01',end:'2022-06-01',candle:false,mcas:false,rsi:false,median:false,medianInt:200,colorMedium:'#55EAB1',bolFactor:2,colorBol:'#858585',color:'#3028EB',bol:false,rsiColor:'#EB3C17',mcasColor:'#3028EB'} );
@@ -17,10 +15,11 @@ Object.assign(chartInput, { id: 'DE0008404005',start:'2022-03-01',end:'2022-06-0
 
 var cStockID = chartInput.id; 
 let medianOn = chartInput.median;
-//export const medianDays = 200;
-//export const bolFactor = 2; // factor (k) for bollinger bander; 2 = 95% confidence 
+export var cStockData = getSingleStock(cStockID,stockData); 
+console.log(cStockData);
 
 export var options = {
+  title:cStockData.name +" ("+ chartInput.id + ")",
   legend: 'bottom',
   chartArea: {
       width: '80%'
@@ -82,7 +81,6 @@ export var optionsRSI = {
   },
 };
 
-export var cStockData = getSingleStock(cStockID,stockData); 
 export var [stockClosingData,mcasData,rsiData] = getClosingByDay(cStockData,chartInput.start,chartInput.end,chartInput.median,chartInput.medianInt,chartInput.bol,chartInput.bolFactor,chartInput.candle);
 let mcasHidden = (chartInput.mcas == true ? "" : "none");
 let rsiHidden = (chartInput.rsi == true ? "" : "none");

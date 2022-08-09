@@ -20,6 +20,7 @@ export default function App() {
       <GraphMenu />
       <Graph />
 
+      <Typography id="aboutUs">by Hans,Able,Aigner,Sandner & Eisenmann &bull; HAW Landshut</Typography>
     </div>
   )
 }

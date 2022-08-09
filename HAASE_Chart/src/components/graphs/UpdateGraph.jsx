@@ -13,6 +13,7 @@ export function updateChart(i)  {
     let [stockClosingData,mcasData,rsiData] = getClosingByDay(cStockData,i.start,i.end,i.median,i.medianInt,i.bol,i.bolFactor,i.candle);
     
     var options = {
+        title:cStockData.name +" ("+ i.id + ")",
         legend: 'bottom',
         chartArea: {
             width: '80%'

@@ -125,23 +125,6 @@ export default function SelectionCard() {
         updateChart(chartInput);
     };
 
-    //UseStates für Anzahl Tage Gl.D. und Standardabweichung Bollinger
-    const [gleitenderDurchschnittTage, setGleitenderDurchschnittTage] = React.useState(200);   //ToDo Anpassen durch Paul
-    const handleGleitenderDurchschnittTage = (event) => {
-        setGleitenderDurchschnittTage(event.target.value);
-        Object.assign(chartInput, { color: event.target.value });
-        updateChart(chartInput);
-    };
-    const [bollingerAbweichung, setBollingerAbweichung] = React.useState('95%');       //ToDo Anpassen durch Paul
-    const handleBollingerAbweichung = (event) => {
-        setBollingerAbweichung(event.target.value);
-        Object.assign(chartInput, { color: event.target.value });
-        updateChart(chartInput);
-    };
-
-
-
-
 
 
 
@@ -189,7 +172,7 @@ export default function SelectionCard() {
                                     <Select
                                         labelid="select-kurs-colour"
                                         id="select-kurs-colour"
-                                        value={kursColour}
+                                        value={stockColour}
                                         label="Einfärbung Aktienkurs"
                                         onChange={handleStockColour}
                                     >

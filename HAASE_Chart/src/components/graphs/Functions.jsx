@@ -23,7 +23,7 @@ export function getClosingByDay(stockData,startDate,endDate,median=false,medianD
 
   var tempArray = []; var arrGD = [];var last12 = [];var last26 = [];var lastSignal = [];var lastRSI = []; var arrBollinger = []; 
   let vGD = 0; let fEMA = 0; let sEMA = 0; let MACD = 0; let signalMACD = 0; let closingDayBefore = prices[0].closing; let RSI = 0; let bolMed = 0; let bolLow = 0; let bolUpr = 0; let bolStdDev = 0;
-  tempArray.push( {type: "date", label: "Datum"}, {id: "n0",type: "number", label:"Stock price"});
+  tempArray.push( {type: "date", label: "Datum"}, {id: "n0",type: "number", label:"Aktienkurs"});
 
   if(median == true) {
     tempArray.push({id: "n1", type: "number", label: medianDays +" Tage gleitender Durchschnitt"});
