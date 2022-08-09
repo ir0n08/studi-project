@@ -38,3 +38,7 @@ The user has the option to choose a stock of his choice, change the stock lines 
 git add .<br>
 git commit -m "Commit message"<br>
 git push origin your-branch // dont push to master without pull req<br>
+  
+  
+# Contact  
+s-peisen@haw-landshut.de
