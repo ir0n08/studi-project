@@ -38,7 +38,7 @@ The user has the option to choose a stock of his choice, change the stock lines 
 ## Data Flow
 `cd HAASE_Chart`
 - Stock input data is in `./stockData.js`<br/>The json was declared as js so it can directly be imported into react
-- The visual graph is displayed with the use of [Google Charts]() 
+- The visual graph is displayed with the use of [Google Charts](https://developers.google.com/chart/interactive/docs) 
 - Google Charts requires a singel dim array that is provied by the function `getClosingByDay()` that is in `./src/components/graphs/Functions.jsx`
 - `getClosingByDay()` requires the following arguments: stock json array (of a singel stock), first day of visible chart, last day of visible chart, Moving Average visible?, Moving Average day range, Bollinger Bands visible?, Bollinger Bands standard devirabes factor (95,4% = 2x), candlesticks visible?
 - The `getClosingByDay()` function return three arrays as there are max three charts: the standard stock chart which is always visible, the MACS chart and the RSI chart
@@ -87,6 +87,8 @@ The `getClosingByDay()` function has to loop thourgh the whole json with every s
 - REACT
 - Google Charts
 - MUI 
+- react-bootstrap 
+- react-dom 
 
 
 ---
