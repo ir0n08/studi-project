@@ -21,9 +21,10 @@ or
   
 3. **Run Dev version**  
 `npm run dev`  
-Open your local browser at http://localhost:3000/  
-<br>
-Our IDE of choice was **MS Visual Studio Code**  
+Open your local browser at [localhost:3000](http://localhost:3000/)  
+  
+Our IDE of choice was **MS Visual Studio Code**
+  
   
 # How does it works  
 The user has the option to choose a stock of his choice, change the stock lines color. The technical analysises that are availabile are:  
@@ -43,9 +44,78 @@ The user has the option to choose a stock of his choice, change the stock lines 
 - The `getClosingByDay()` function return three arrays as there are max three charts: the standard stock chart which is always visible, the MACS chart and the RSI chart
 - All of the five technical analysis need seperate function where their values are calcualted. These functions are also in `./src/components/graphs/Functions.jsx`. The initial graph is drawn in `./src/components/graphs/Graph.jsx`
   
+<br><br><br>
+### JSON File
   
+The supplied json file has been modified as js an given an var name `stockData`. The file has the following general structure:
   
+```js
+export const stockData = [{
+    "values":
+    [
+        {
+            "isin": "GB007007",
+            "name": "A COMAPANY INC",
+            "symbol": "ABR",
+            "prices":[*]
+         },
+         ...next itm ...
+     ]
+}];
+```
+<br><br>
+\*In the `prices` array the stock makets data is stored. For the supplied time period this means approx. 22 years x 255 workdays. Each entry contains five values:
+
+```json
+        {
+            "date": "2022-06-20",
+            "currency": "EUR",
+            "opening": 65.8,
+            "high": 65.84,
+            "low": 64.02,
+            "closing": 64.74
+        }
+```  
+_To save processing data and storage it would be advised to move the currency item from every day to the stocks root node_    
+  <br><br>
+The `getClosingByDay()` function has to loop thourgh the whole json with every site visit because some technical analysis require data for their calculation that is not visible in the chart. This requires more compute power but keeps the code nice and simple: *Simplicity favors regularity*
+
 ---
+ 
+## Libarys in use
+
+- REACT
+- Google Charts
+- MUI 
+
+
+---
+  
+
+# Project progress
+
+- [x] **Milestone 1**<br>One Pager for each graph with mathematical operation and explanation (#1) <br> JS Framework decision and test setup (#2) <br> UI/Graphs framework decision and first test cases (#3) <br> Requirements specification, must-have definition and define test cases (#4) <br> Detailed project plan & backlog (#5) <br> Documentation setup (#5) 
+- [x] **Milestone 2** <br> Min. 3 graph analyses implemented with data from CSV/XML <br> CSV/XML input on backend side <br> Graph is displayed rudimentary 
+- [x] **Milestone 3** <br> All graph analyses implemented <br> Multiple courses selectable <br> UI finished except for finishing touches <br> Documentation 90% complete 
+- [x] **Milestone 4** <br> QA proceeded positively <br> Documentation completed 
+- [ ] **Milestone 5 _the extra mile_** <br> API connection <br> Moblie Responsive UI <br> More? 
+- [ ] **Project handover**
+
+# Lessons Learned
+  
+**Prositiv(ish):**  
+- Splitting into components invisible  
+- A project member as a 'think tank' who can be asked about technical questions has proven its worth. This means that not everyone has to read up on the subject matter and this one person can explain the facts in a way that is easy to understand for the members of the implementation -> great time saving.
+- Starting the project early was worthwhile, but the initial enthusiasm must be maintained next time.
+- Pizza coding sessions are a lot of fun and are especially good for inexperienced coders to learn from the experienced ones -> here onsite is clearly better than remote.
+  
+  
+**Negative(ish):**
+- Assigning project tasks during exam time is not useful.
+- Holding standup meetings asynchronously does not work in new teams.
+- Student motivation should not be controlled by time and completion factors, but by results.
+- Roles should always have a backup in case of illness.
+- Team calls should be scheduled with video, otherwise there is too much chaos. An agenda should be recognisable
   
   
 ## Update code
