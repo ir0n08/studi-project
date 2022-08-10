@@ -1,7 +1,7 @@
 import * as React from 'react';
 import GraphMenu from './GraphMenu';
 import { Chart } from "react-google-charts";
-import { Box } from '@mui/material';
+import { Box, Typography } from '@mui/material';
 import { stockData } from "../../../stockData";
 import { Stocks, getSingleStock, getClosingByDay, getStockNames } from "./Functions";
 import ReactDOM from "react-dom/client";
@@ -18,15 +18,13 @@ let medianOn = chartInput.median;
 export var cStockData = getSingleStock(cStockID,stockData); 
 
 export var options = {
-  title: cStockData.name +" ("+ chartInput.id + ")",
   legend: 'bottom',
   chartArea: {
-      width: '80%'
+      width: '90%'
   },
   series : {
       0: { color: chartInput.color } // actuale stock value
   },
-  hAxis: { },
   vAxis: { viewWindowMode: "maximized",format:'#.## \u20AC' },
   intervals: {  },
   candlestick: {  }
@@ -59,9 +57,8 @@ if(chartInput.candle == true) {
 }
 
 export var optionsMCAS = {
-  'title': "MACS_Chart",
   chartArea: {
-    width: '80%'
+    width: '75%'
   },
   legend: 'bottom',
   series: {
@@ -72,15 +69,14 @@ export var optionsMCAS = {
 
 export var optionsRSI = {
   chartArea: {
-    width: '80%'
+    width: '75%'
   },
   legend: 'bottom',
   series: {
     0: { color: 'blue', opacity: 1 }, // Untere Schwelle
     1: { curveType: "function", color: chartInput.rsiColor, opacity: 1}, // ROI
     2: { color: 'blue', opacity: 1 }, // Obere Schwelle
-  },
-  title:'RS-Index Chart'
+  }
 };
 
 export var [stockClosingData,mcasData,rsiData] = getClosingByDay(cStockData,chartInput.start,chartInput.end,chartInput.median,chartInput.medianInt,chartInput.bol,chartInput.bolFactor,chartInput.candle);
@@ -95,13 +91,13 @@ let rsiHidden = (chartInput.rsi == true ? "" : "none");
 export default function Graph(){
 
   
-
     return(
        
         <div>
             <Stocks />
             <div id="chartArea">
               <Box id="mainChart">
+                <Typography sx={{ marginLeft: '7%',position: 'relative',fontWeight: 'bold', textAlign: 'left', fontSize: '14pt', top: '80px', zIndex: 100 }}>{cStockData.name +" ("+ chartInput.id + ")"}</Typography>
                 <Chart
                 chartType="LineChart"
                 width="100%"
@@ -111,7 +107,9 @@ export default function Graph(){
                 />
               </Box>
               <Box sx={{ display: mcasHidden }} >
-                <br/><br/>
+                <br/><br/><br/>
+                <Typography sx={{ marginLeft: '7%',fontWeight: 'bold', textAlign: 'left', fontSize: '14pt',  zIndex: 100 }}>MACD Graph</Typography>
+                <br/>
                 <Chart
                 chartType="Line"
                 width="100%"
@@ -121,8 +119,9 @@ export default function Graph(){
                 />
               </Box>
               <Box sx={{ display: rsiHidden }} >
-                <br/><br/>
-
+                <br/><br/><br/>
+                <Typography sx={{ marginLeft: '7%',fontWeight: 'bold', textAlign: 'left', fontSize: '14pt',  zIndex: 100 }}>RSI Graph</Typography>
+                <br/>
                 <Chart
                 chartType="Line"
                 width="100%"

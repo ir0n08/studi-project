@@ -1,7 +1,7 @@
 import * as React from "react";
 import * as ReactDOM from 'react-dom/client';
 import { Chart } from "react-google-charts";
-import { Box } from '@mui/material';
+import { Box, Typography } from '@mui/material';
 import {getStockNames,getSingleStock, getClosingByDay } from '../graphs/Functions';
 import {chartInput } from '../graphs/Graph';
 import { stockData } from '../../../stockData';
@@ -13,10 +13,9 @@ export function updateChart(i)  {
     let [stockClosingData,mcasData,rsiData] = getClosingByDay(cStockData,i.start,i.end,i.median,i.medianInt,i.bol,i.bolFactor,i.candle);
     
     var options = {
-        title: cStockData.name +" ("+ i.id + ")",
         legend: 'bottom',
         chartArea: {
-            width: '80%'
+            width: '90%'
         },
         series : {
             0: { color: i.color } // actuale stock value
@@ -53,25 +52,28 @@ export function updateChart(i)  {
 
     var optionsMCAS = {
         title: "MACS Chart",
-        hAxis: {},
         vAxis: {title: "Signalhöhe"},
-
+        chartArea: {
+            width: '75%'
+          },
+        legend: 'bottom',
         series: {
           0: { curveType: "function", color: i.mcasColor, opacity: 1 }, // MCAS
           1: { curveType: "function", color: 'red', opacity: 1}, // SIGNAL
-        },
+        }
     };
 
     var optionsRSI = {
         title: "RS-Index Chart",
         chartArea: {
-          width: '80%'
+          width: '75%'
         },
+        legend: 'bottom',
         series: {
           0: { color: 'blue', opacity: 1 }, // Untere Schwelle
           1: { curveType: "function", color: i.rsiColor, opacity: 1}, // ROI
           2: { color: 'blue', opacity: 1 }, // Obere Schwelle
-        },
+        }
     };
     
     const rootUpdate = ReactDOM.createRoot(
@@ -86,6 +88,7 @@ export function updateChart(i)  {
         <Box>
             
             <Box id="mainChart">
+            <Typography sx={{ marginLeft: '7%',position: 'relative',fontWeight: 'bold', textAlign: 'left', fontSize: '14pt', top: '80px', zIndex: 100 }}>{cStockData.name +" ("+ i.id + ")"}</Typography>
                     <Chart
                     chartType="LineChart"
                     width="100%"
@@ -96,6 +99,8 @@ export function updateChart(i)  {
             </Box>
             <Box sx={{ display: mcasHidden }} >
                 <br/><br/>
+                <Typography sx={{ marginLeft: '7%',fontWeight: 'bold', textAlign: 'left', fontSize: '14pt',  zIndex: 100 }}>MACD Graph</Typography>
+                <br/>
                 <Chart
                 chartType="Line"
                 width="100%"
@@ -106,6 +111,8 @@ export function updateChart(i)  {
             </Box>
             <Box sx={{ display: rsiHidden }} >
                     <br/><br/>
+                    <Typography sx={{ marginLeft: '7%',fontWeight: 'bold', textAlign: 'left', fontSize: '14pt',  zIndex: 100 }}>RSI Graph</Typography>
+                    <br/>
                     <Chart
                     chartType="Line"
                     width="100%"
