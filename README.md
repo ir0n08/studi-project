@@ -43,8 +43,42 @@ The user has the option to choose a stock of his choice, change the stock lines 
 - The `getClosingByDay()` function return three arrays as there are max three charts: the standard stock chart which is always visible, the MACS chart and the RSI chart
 - All of the five technical analysis need seperate function where their values are calcualted. These functions are also in `./src/components/graphs/Functions.jsx`. The initial graph is drawn in `./src/components/graphs/Graph.jsx`
   
+<br><br><br>
+### JSON File
   
+The supplied json file has been modified as js an given an var name `stockData`. The file has the following general structure:
   
+```js
+export const stockData = [{
+    "values":
+    [
+        {
+            "isin": "GB007007",
+            "name": "A COMAPANY INC",
+            "symbol": "ABR",
+            "prices":[*]
+         },
+         ...next itm ...
+     ]
+}];
+```
+<br><br>
+\*In the `prices` array the stock makets data is stored. For the supplied time period this means approx. 22 years x 255 workdays. Each entry contains five values:
+
+```json
+        {
+            "date": "2022-06-20",
+            "currency": "EUR",
+            "opening": 65.8,
+            "high": 65.84,
+            "low": 64.02,
+            "closing": 64.74
+        }
+```  
+_To save processing data and storage it would be advised to move the currency item from every day to the stocks root node_    
+  <br><br>
+The `getClosingByDay()` function has to loop thourgh the whole json with every site visit because some technical analysis require data for their calculation that is not visible in the chart. This requires more compute power but keeps the code nice and simple: *Simplicity favors regularity*
+
 ---
   
   
